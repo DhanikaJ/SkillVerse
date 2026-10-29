@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>404 | Lost in Space</title>
+        <link rel="icon" href="assets/images/logo/blackplanet.png" type="image/png">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <link rel="stylesheet" href="assets/css/404.css"/>
+    </head>
+    <body>
+        <!-- Parallax BGs -->
+        <div class="star-bg"></div>
+        <div class="nebula-bg"></div>
+        <div class="planet-bg"></div>
+        <div class="shooting-bg"></div>
+        <!-- Matthew McConaughey floating in space (Interstellar style) -->
+        <img id="interstellar-matthew"
+             src="assets/images/space.png"
+             alt="Matthew McConaughey Lost in Space"
+             style="position:fixed; left:64vw; top:55vh; width:88px; z-index:2; opacity:0.92; pointer-events:none; filter:drop-shadow(0 0 32px #3befff50);">
+
+        <div class="main-content">
+            <h1>404</h1>
+            <h2>Lost in the Cosmos</h2>
+            <p>
+                Oops, the page you’re seeking doesn’t exist.<br>
+                Perhaps it’s in another universe, or maybe a black hole ate it.<br>
+                Let’s get you back home!
+            </p>
+            <a href="home.html">Take Me Home</a>
+        </div>
+        <script>
+            // Star field generation
+            const stars = 110;
+            const starBG = document.querySelector('.star-bg');
+            for (let i = 0; i < stars; i++) {
+                const s = document.createElement('div');
+                s.className = 'star';
+                s.style.left = `${Math.random() * 100}vw`;
+                s.style.top = `${Math.random() * 100}vh`;
+                s.style.opacity = 0.4 + Math.random() * 0.6;
+                s.style.width = s.style.height = `${1 + Math.random() * 2.2}px`;
+                starBG.appendChild(s);
+            }
+            // Animate stars twinkle a bit
+            setInterval(() => {
+                document.querySelectorAll('.star').forEach(star => {
+                    star.style.opacity = 0.35 + Math.random() * 0.7;
+                });
+            }, 860);
+
+            // Nebula effect
+            const nebulaBG = document.querySelector('.nebula-bg');
+            const nebulaColors = [
+                'rgba(120,188,255,0.55)', 'rgba(100,58,245,0.39)', 'rgba(0,239,255,0.27)',
+                'rgba(192,91,247,0.21)', 'rgba(250,216,117,0.13)', 'rgba(246,33,176,0.13)'
+            ];
+            const nebulae = [];
+            for (let i = 0; i < 7; i++) {
+                const n = document.createElement('div');
+                n.className = 'nebula';
+                n.style.width = n.style.height = `${190 + Math.random() * 210}px`;
+                n.style.left = `${8 + Math.random() * 84}%`;
+                n.style.top = `${4 + Math.random() * 86}%`;
+                n.style.background = `radial-gradient(circle at 52% 44%, ${nebulaColors[i % nebulaColors.length]} 40%, transparent 100%)`;
+                n.style.opacity = 0.16 + Math.random() * 0.12;
+                nebulaBG.appendChild(n);
+                nebulae.push(n);
+            }
+
+            // Planets (with float)
+            const planetBG = document.querySelector('.planet-bg');
+            const planetData = [
+                {size: 80, left: "82%", top: "17%", color: "#60caff", shadow: "#9efcff44"},
+                {size: 56, left: "14%", top: "70%", color: "#e791fe", shadow: "#ffd1f5"},
+                {size: 120, left: "33%", top: "35%", color: "#ffd787", shadow: "#ffe4b2"},
+                {size: 42, left: "63%", top: "81%", color: "#7bffcf", shadow: "#e5fff3"}
+            ];
+            planetData.forEach((p, i) => {
+                const el = document.createElement('div');
+                el.className = 'planet';
+                el.style.width = el.style.height = p.size + 'px';
+                el.style.left = p.left;
+                el.style.top = p.top;
+                el.style.background = `radial-gradient(ellipse at 60% 30%, ${p.color} 80%, #fff0 100%)`;
+                el.style.boxShadow += `, 0 0 70px 0 ${p.shadow}`;
+                el.style.animationDelay = `${i * 1.6}s`;
+                planetBG.appendChild(el);
+            });
+
+            // Parallax with mouse movement (full smooth effect)
+            document.addEventListener('mousemove', e => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 2;
+                const y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+                // Nebulae: further back = less parallax
+                nebulae.forEach((n, i) => {
+                    const depth = 12 + i * 7.5;
+                    n.style.transform = `translate(${x * depth}px, ${y * depth}px) scale(1.04)`;
+                });
+                // Planets
+                document.querySelectorAll('.planet').forEach((p, i) => {
+                    const depth = 7 + i * 8.3;
+                    p.style.transform = `translate(${x * depth}px, ${y * depth}px) scale(${1 + (i % 2) * .08})`;
+                });
+                // Tilt 404 container
+                document.querySelector('.main-content').style.transform =
+                        `perspective(900px) rotateY(${x * 10}deg) rotateX(${y * 8}deg)`;
+            });
+
+            // Shooting stars
+            const shootingBG = document.querySelector('.shooting-bg');
+            function spawnShootingStar() {
+                const s = document.createElement('div');
+                s.className = 'shooting-star';
+                s.style.left = `${8 + Math.random() * 82}%`;
+                s.style.top = `${Math.random() * 68}%`;
+                s.style.opacity = 0.25 + Math.random() * 0.4;
+                s.style.height = `${80 + Math.random() * 100}px`;
+                shootingBG.appendChild(s);
+                setTimeout(() => {
+                    s.remove();
+                }, 1450);
+            }
+            setInterval(spawnShootingStar, 1330 + Math.random() * 900);
+
+            // Animate Matthew floating and spinning in space!
+            const matthew = document.getElementById('interstellar-matthew');
+            let matthewBaseLeft = 64, matthewBaseTop = 55; // vw, vh
+            let matthewAngle = 0;
+            function animateMatthew() {
+                matthewAngle += 0.25;
+                // Sine wave float
+                const floatY = Math.sin(matthewAngle / 22) * 16;
+                const floatX = Math.cos(matthewAngle / 37) * 10;
+                // Slow rotation
+                const rotate = Math.sin(matthewAngle / 32) * 6;
+                // Mouse parallax
+                let px = window._mouseX || 0, py = window._mouseY || 0;
+                matthew.style.left = `calc(${matthewBaseLeft}vw + ${floatX + px * 8}px)`;
+                matthew.style.top = `calc(${matthewBaseTop}vh + ${floatY + py * 8}px)`;
+                matthew.style.transform = `rotate(${rotate}deg)`;
+                requestAnimationFrame(animateMatthew);
+            }
+            requestAnimationFrame(animateMatthew);
+
+// Track mouse for parallax
+            window._mouseX = window._mouseY = 0;
+            document.addEventListener('mousemove', e => {
+                window._mouseX = ((e.clientX / window.innerWidth) - 0.5);
+                window._mouseY = ((e.clientY / window.innerHeight) - 0.5);
+            });
+
+        </script>
+    </body>
+</html>

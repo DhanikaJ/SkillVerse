@@ -1,0 +1,118 @@
+html, body {
+    background: #161c24 !important;
+    color: #f8f9fa !important;
+    font-family: 'Montserrat', sans-serif;
+    min-height: 100vh;
+}
+.dashboard-card {
+    background: #232d3b;
+    border: 1.5px solid #222a38;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px 0 rgba(30,34,90,.07);
+    padding: 1.3rem 1.4rem 1.2rem 1.4rem;
+    margin-bottom: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.dashboard-card .progress {
+    height: 7px;
+    border-radius: 8px;
+    background: #1e2e3f;
+    margin-top: 10px;
+    margin-bottom: 6px;
+}
+.dashboard-card .progress-bar {
+    background: #21b37a;
+    border-radius: 8px;
+}
+.btn-outline-primary, .btn-primary {
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1em;
+}
+.btn-outline-primary {
+    color: #21b6ff !important;
+    border-color: #21b6ff;
+}
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+    background: #21b6ff;
+    color: #fff !important;
+    border-color: #21b6ff;
+}
+.tab-btn {
+    border-radius: 999px;
+    font-weight: 600;
+    padding: 0.42em 1.15em;
+    font-size: 1.06em;
+    margin-right: 8px;
+    transition: background 0.14s, color 0.14s;
+}
+.tab-btn.active {
+    background: #32446a;
+    color: #fff;
+    border: none;
+}
+.tab-btn:not(.active) {
+    background: transparent;
+    color: #90caf9;
+    border: 1.5px solid #32446a;
+}
+.dashboard-card .resume-btn {
+    font-size: 1em;
+    font-weight: 700;
+    border-radius: 14px;
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 0.45em 1.3em;
+}
+.dashboard-card .resume-btn:hover {
+    background: #2196f3;
+}
+.goal-profile-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 1rem;
+    border: 2px solid #1976d2;
+}
+.goal-edit-link {
+    color: #21b6ff;
+    font-size: 1em;
+    font-weight: 500;
+    text-decoration: underline;
+    margin-top: 0.2em;
+}
+.goal-edit-link:hover {
+    color: #90caf9;
+}
+@media (max-width: 991.98px) {
+    .dashboard-card {
+        padding: 1rem 0.8rem;
+    }
+}
+@media (max-width: 767.98px) {
+    .dashboard-main-row {
+        flex-direction: column;
+    }
+    .dashboard-side-col {
+        margin-top: 1.5rem;
+    }
+}
+.navbar, .navbar .nav-link, .navbar .form-control, .navbar .btn-link {
+    background: #20252c !important;
+    color: #f8f9fa !important;
+    border: none;
+}
+.navbar {
+    box-shadow: 0 4px 16px 0 rgba(20, 24, 44, 0.12);
+}
+.nav-link.active {
+    color: #90caf9 !important;
+    font-weight: 700;
+    border-bottom: 2.5px solid #90caf9;
+    background: transparent !important;
+}

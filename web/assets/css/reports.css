@@ -1,0 +1,253 @@
+body {
+    font-family: 'Montserrat', system-ui, -apple-system, "Segoe UI", Helvetica, Arial;
+    background: #0d1117;
+    color: #fff;
+}
+
+.navbar {
+    background: rgba(13, 17, 23, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid #21262d;
+}
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(2px 1px at 20px 30px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 1px at 40px 70px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 160px 30px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 200px 60px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(5px 5px at 240px 20px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 280px 50px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 320px 75px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 360px 35px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 400px 65px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 440px 25px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 480px 55px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 520px 80px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 560px 40px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 600px 70px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 640px 30px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 680px 60px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 720px 20px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 760px 45px, rgba(255,255,255,0.9), transparent),
+        radial-gradient(1px 1px at 800px 75px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 840px 35px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 880px 65px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(4px 4px at 920px 25px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 960px 55px, rgba(255,255,255,0.9), transparent);
+    background-repeat: repeat;
+    background-size: 1000px 100px;
+    animation: twinkle 4s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.navbar > * {
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: translateY(0px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-1px);
+    }
+}
+.navbar-brand img {
+    height: 40px;
+}
+
+.nav-link {
+    color: #f0f6fc !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: #21b6ff !important;
+}
+
+.dashboard-wrapper {
+    min-height: calc(100vh - 76px);
+}
+
+.sidebar {
+    background: #161b22;
+    border-radius: 12px;
+    padding: 20px 0;
+    border: 1px solid #21262d;
+}
+
+.sidebar-link {
+    display: block;
+    padding: 12px 20px;
+    color: #f0f6fc;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link:hover {
+    background: #21262d;
+    color: #21b6ff;
+    border-left-color: #21b6ff;
+}
+
+.sidebar-link.active {
+    background: rgba(33, 182, 255, 0.1);
+    color: #21b6ff;
+    border-left-color: #21b6ff;
+}
+
+.sidebar-link i {
+    margin-right: 10px;
+    width: 20px;
+}
+
+.section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #f0f6fc;
+}
+
+.card {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 12px;
+}
+
+.card-metric {
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.card-metric:hover {
+    transform: translateY(-2px);
+}
+
+.card-metric .display-6 {
+    font-weight: 700;
+    color: #21b6ff;
+    margin: 0.5rem 0;
+}
+
+.text-muted {
+    color: #8b949e !important;
+}
+
+.btn-primary {
+    background: #21b6ff;
+    border-color: #21b6ff;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: #1a9de8;
+    border-color: #1a9de8;
+}
+
+.btn-success {
+    background: #28a745;
+    border-color: #28a745;
+    font-weight: 600;
+}
+
+.btn-outline-secondary {
+    border-color: #6c757d;
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.btn-outline-secondary:hover {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+
+.form-control, .form-select {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #f0f6fc;
+}
+
+.form-control:focus, .form-select:focus {
+    background: #21262d;
+    border-color: #21b6ff;
+    box-shadow: 0 0 0 0.2rem rgba(33, 182, 255, 0.25);
+    color: #f0f6fc;
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
+    color: #f0f6fc;
+}
+
+.table th {
+    border-color: #21262d;
+    font-weight: 600;
+    color: #f0f6fc;
+}
+
+.table td {
+    border-color: #21262d;
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(33, 182, 255, 0.1);
+}
+
+.controls-wrapper {
+    background: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.controls-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #f0f6fc;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.download-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        margin-bottom: 1rem;
+    }
+
+    .quick-actions, .download-actions {
+        flex-direction: column;
+    }
+
+    .dashboard-wrapper {
+        flex-direction: column;
+    }
+}

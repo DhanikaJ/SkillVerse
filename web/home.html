@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">      
+        <title>SkillVerse</title>
+        <link rel="icon" href="assets/images/logo/blackplanet.png" type="image/png">
+        <!-- Bootstrap 5 CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Google Fonts: Montserrat -->
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+        <!-- Remix Icon -->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/home.css"/>
+
+    </head>
+<body onload="loadData(); updateCartCount();"> 
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg sticky-top">
+            <div class="container-lg">
+                <a class="navbar-brand d-flex align-items-center" href="home.html">
+                    <img src="assets/images/logo/skillversewhite2.gif" alt="Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto ms-3 mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link me-3 active" aria-current="page" href="home.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3" href="my-learning.html">My Learning</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3" href="online-degrees.html">Online Degrees</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3" href="my-courses.html">My Courses</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex me-3" id="course-search-form" role="search" autocomplete="off">
+                        <input class="form-control bg-dark border-0 text-light me-1" type="search" placeholder="What do you want to learn?" aria-label="Search" style="width:250px" id="course-search-input">
+                        <button class="btn btn-link text-light text-decoration-none me-4" type="submit"><i class="ri-search-line fs-5"></i></button>
+                    </form>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown ms-3 me-3">
+                            <a href="#" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false" class="text-light text-decoration-none">
+                                <i class="ri-global-line fs-5"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow border-1 mt-2" aria-labelledby="langDropdown" style="min-width: 120px;">
+                                <li><a class="dropdown-item" href="#" onclick="translatePage('en')">English</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="translatePage('si')">සිංහල</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="translatePage('ta')">தமிழ்</a></li>
+                                <!-- Add more languages if you want -->
+                            </ul>
+                        </div>
+
+                        <a href="#" class="ms-3 text-light text-decoration-none me-3"><i class="ri-notification-3-line fs-5"></i></a>
+                        <a href="#" id="cartIcon" class="ms-3 text-light text-decoration-none me-4" style="position: relative;" onclick="cartIcon();">
+                            <i class="ri-shopping-cart-2-line fs-5"></i>
+                            <span id="cart-count" class="badge bg-primary position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size:0.78em; min-width:18px;">0</span>
+                        </a>
+
+                        <!-- Profile Dropdown -->
+                        <div class="dropdown">
+                            <a href="#" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" class="d-flex align-items-center text-decoration-none">
+                                <i class="ri-user-3-fill fs-4"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-1 mt-2" aria-labelledby="profileDropdown" style="min-width: 260px; border-radius: 12px;">
+                                <li><a class="dropdown-item py-2" href="profile.html">Profile</a></li>
+                                <li><a class="dropdown-item py-2" href="purchases.html">My Purchases</a></li>
+                                <li><a class="dropdown-item py-2" href="#">Settings</a></li>
+                                <li><a class="dropdown-item py-2" href="instructor.html">My Courses</a></li>
+                                <li><a class="dropdown-item py-2" href="404.html">Accomplishments</a></li>
+                                <li><a class="dropdown-item py-2" href="admin-reports.html">Reports</a></li>
+                                <li><a class="dropdown-item py-2" onclick="signOut();">Log Out</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="px-3 py-2">
+                                    <a href="#" class="fw-semibold text-primary mb-0 d-block" style="font-size: 1.02em;">Get Skillverse <span class="badge bg-primary text-white ms-1" style="font-size:0.78em; vertical-align: middle;">PLUS</span></a>
+                                    <div class="small text-muted">Access 10,000+ courses</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Profile Dropdown -->
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!--Navbar -->
+
+        <!-- Filters Bar -->
+        <div class="container my-3 mb-5 mt-5">
+            <!-- Filters Bar -->
+            <div class="filters-bar mb-4 d-flex flex-wrap  gap-5 mb-4 justify-content-center m-3 space-stars" style="position:relative;">
+                <div>
+                    <label class="fw-semibold text-secondary me-2">Category</label>
+                    <select class="form-select d-inline w-auto" id="filter-category">
+                        <option value="0">All</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="fw-semibold text-secondary me-2">Difficulty</label>
+                    <select class="form-select d-inline w-auto" id="filter-difficulty">
+                        <option value="">All</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="fw-semibold text-secondary me-2">Price</label>
+                    <select class="form-select d-inline w-auto" id="filter-price">
+                        <option value="">All</option>
+                        <option value="Free">Free</option>
+                        <option value="Paid">Paid</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- Filters Bar -->
+
+        <!-- Popular Courses -->
+        <section class="container-lg career-section">
+            <div class="d-flex align-items-center mb-4 flex-wrap">
+                <h2 class="fw-bold mb-4" style="font-size:2.1rem;">Most Popular Certificates</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="course-list">
+                <!-- Cards will be rendered by JS below -->
+            </div>
+        </section>
+        <!-- Popular Courses -->
+
+        <!--Pagination-->
+        <nav aria-label="Page navigation" class="my-4">
+            <ul class="pagination justify-content-center" id="course-pagination"></ul>
+        </nav>
+        <!--Pagination-->
+
+        <!--footer-->
+        <div id="footer-placeholder"></div>
+        <script>
+            fetch('footer.html')
+                    .then(res => res.text())
+                    .then(data => {
+                        document.getElementById('footer-placeholder').innerHTML = data;
+                    });
+        </script>
+        <!--footer-->
+
+        <!--cart-->
+        <div id="cart-drawer-placeholder"></div>
+        <script>
+            fetch('cart-drawer.html')
+                    .then(res => res.text())
+                    .then(data => {
+                        document.getElementById('cart-drawer-placeholder').innerHTML = data;
+                    });
+        </script>
+        <!--cart-->
+
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="homeToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="assets/images/logo/whiteplanet.png" class="rounded me-2" style="height: 40px; vertical-align: middle; margin-left: 2px;">
+                    <strong class="me-auto">SkillVerse</strong>
+                    <small>Now</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="toastBody">
+                    <!-- Message goes here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Translate script -->
+        <div id="google_translate_element" style="display:none;"></div>
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'en,si,ta', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+            }
+
+            // Language change handler
+            function translatePage(lang) {
+                if (lang === 'en') {
+                    // Reset to English
+                    document.cookie = 'googtrans=/en/en;domain=' + window.location.hostname + ';path=/';
+                    location.reload();
+                    return;
+                }
+                var code = '/en/' + lang;
+                document.cookie = 'googtrans=' + code + ';domain=' + window.location.hostname + ';path=/';
+                location.reload();
+            }
+        </script>
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script src="assets/js/sign-out.js"></script>
+        <script src="assets/js/cart.js"></script>
+        <script src="assets/js/home.js"></script>
+
+        <!-- Bootstrap 5 JS Bundle -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- GSAP for animation -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    </body>
+</html>

@@ -1,0 +1,8 @@
+node_modules/
+build/
+dist/
+nbproject/private/
+*.log
+.env
+.env.*
+src/java/hibernate.cfg.xml

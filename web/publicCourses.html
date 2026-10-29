@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Browse Courses</title>
+        <link rel="icon" href="assets/images/logo/blackplanet.png" type="image/png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!-- Bootstrap, RemixIcon, Google Fonts -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+        <link rel="stylesheet" href="assets/css/public-courses.css"/>
+
+    </head>
+    <body onload="loadData();">
+
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg navbar-white bg-white shadow sticky-top">
+            <div class="container">
+                <a class="navbar-brand" href="#"><img id="main-logo" src="assets/images/logo/skillverseblue2.gif" alt="alt" width="200"/></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse flex-grow-1" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" data-bs-toggle="dropdown">Categories</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Data Science</a></li>
+                                <li><a class="dropdown-item" href="#">Business</a></li>
+                                <li><a class="dropdown-item" href="#">IT & Software</a></li>
+                                <li><a class="dropdown-item" href="#">Health</a></li>
+                                <li><a class="dropdown-item" href="#">Language Learning</a></li>
+                                <li><a class="dropdown-item" href="#">Personal Development</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="#">Degrees</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">For Business</a></li>
+                    </ul>
+                    <form class="d-flex me-3" id="course-search-form" role="search" autocomplete="off">
+                        <input class="form-control bg-dark border-0 text-light me-1" type="search" placeholder="What do you want to learn?" aria-label="Search" style="width:250px" id="course-search-input">
+                        <button class="btn btn-link text-light text-decoration-none me-4" type="submit"><i class="ri-search-line fs-5"></i></button>
+                    </form>
+                    <a href="#" class=" kbtn btn-link d-none d-md-inline text-dark text-decoration-none" data-bs-toggle="modal" data-bs-target="#loginModal">Log in</a>
+                    <a href="#" class="btn btn-primary rounded-pill ms-2 px-4" data-bs-toggle="modal" data-bs-target="#signupModal">Join for Free</a>
+                    <button id="dark-toggle" class="btn btn-light ms-3 rounded-circle shadow position-relative overflow-hidden d-flex align-items-center justify-content-center"
+                            style="width: 40px; height: 40px; transition: background 0.4s;">
+                        <span id="toggle-icon" class="fs-5 transition">🌙</span>
+                    </button>
+
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero-carousel position-relative mb-5">
+            <div class="container position-relative py-5" style="z-index:2;">
+                <h1 class="display-5 fw-bold mb-3">Professional Certificates</h1>
+                <div class="lead mb-1">Get job-ready for an in-demand career</div>
+            </div>
+            <img src="assets/images/logo/whiteplanet.png"
+                 alt=""
+                 class="hero-c-img position-absolute top-0 end-0"/>
+        </section>
+
+
+
+        <div class="container my-3 mb-5">
+            <!-- Filters Bar -->
+            <div class="filters-bar mb-4 d-flex flex-wrap  gap-3 mb-4 justify-content-center m-3">
+                <div>
+                    <label class="fw-semibold text-secondary me-2">Category</label>
+                    <select class="form-select d-inline w-auto" id="filter-category">
+                        <option value="0">All</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="fw-semibold text-secondary me-2">Difficulty</label>
+                    <select class="form-select d-inline w-auto" id="filter-difficulty">
+                        <option value="">All</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="fw-semibold text-secondary me-2">Price</label>
+                    <select class="form-select d-inline w-auto" id="filter-price">
+                        <option value="">All</option>
+                        <option value="Free">Free</option>
+                        <option value="Paid">Paid</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Course Cards Grid -->
+            <section class="container-lg career-section">
+                <div class="d-flex align-items-center mb-4 flex-wrap">
+                    <h2 class="fw-bold mb-4" style="font-size:2.1rem;">Most Popular Certificates</h2>
+                </div>
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4" id="course-list">
+                    <!-- Cards will be rendered by JS below -->
+                </div>
+            </section>
+        </div>
+        
+        <!--Pagination-->
+        <nav aria-label="Page navigation" class="my-4">
+            <ul class="pagination justify-content-center" id="course-pagination"></ul>
+        </nav>
+        <!--Pagination-->
+
+        <!--footer-->
+        <div id="footer-placeholder"></div>
+        <script>
+            fetch('footer.html')
+                    .then(res => res.text())
+                    .then(data => {
+                        document.getElementById('footer-placeholder').innerHTML = data;
+                    });
+        </script>
+        <!--footer-->
+
+        <!-- Signup Modal -->
+        <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow rounded-4">
+                    <div class="modal-header border-0 pb-0 mb-3 ">
+                        <h5 class="modal-title fw-bold" id="signupModalLabel">SIGN UP</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body py-0">
+                        <form>
+                            <div class="mb-3">
+                                <label for="signupEmail" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="ri-mail-line"></i></span>
+                                    <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="signupName" class="form-label">Full Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="ri-user-line"></i></span>
+                                    <input type="text" class="form-control" id="name" placeholder="Your name">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="signupPassword" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="ri-lock-2-line"></i></span>
+                                    <input type="password" class="form-control" id="password" placeholder="Create a password">
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-primary w-100 py-2 fw-semibold mb-3" onclick="signUp();">Sign Up</button>
+                        </form>
+                        <div class="d-flex align-items-center my-3">
+                            <hr class="flex-grow-1">
+                            <span class="mx-2 text-muted">or</span>
+                            <hr class="flex-grow-1">
+                        </div>
+                        <div class="d-grid gap-2 mb-2">
+                            <button class="btn btn-light border d-flex align-items-center justify-content-center gap-2">
+                                <i class="ri-google-fill text-danger"></i> Sign up with Google
+                            </button>
+                            <button class="btn btn-light border d-flex align-items-center justify-content-center gap-2 mb-3">
+                                <i class="ri-facebook-box-fill text-primary"></i> Sign up with Facebook
+                            </button>
+                        </div>
+                        <div class="ll text-center mt-3 mb-3 medium text-muted">
+                            Already have an account? <a href="#" class="text-primary text-decoration-none" data-bs-toggle="modal" data-bs-target="#loginModal">Log in</a>
+                        </div>
+                        <div class="mb-4 form-tex">
+                            By signing up, you agree to our <a href="#" class="text-primary text-decoration-none">Terms of Service</a> and <a href="#" class="text-primary text-decoration-none">Privacy Policy</a>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow rounded-4">
+                    <div class="modal-header border-0 pb-0 mb-3">
+                        <h5 class="modal-title fw-bold" id="loginModalLabel">WELCOME BACK</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body py-0">
+                        <form>
+                            <div class="mb-3">
+                                <label for="loginEmail" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="ri-mail-line"></i></span>
+                                    <input type="email" class="form-control" id="loginEmail" placeholder="your@example.com">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="loginPassword" class="form-label">Password</label>
+                                <div class="input-group" id="show-hide-password">
+                                    <span class="input-group-text bg-light"><i class="ri-lock-2-line"></i></span>
+                                    <input type="password" class="form-control" id="loginPassword" placeholder="Your password">
+                                    <button class="btn btn-outline-secondary border-0" type="button" id="togglePassword">
+                                        <i class="ri-eye-off-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check mb-0">
+                                    <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+                                    <label class="form-check-label small" for="rememberMe">
+                                        Remember me
+                                    </label>
+                                </div>
+                                <a href="#" class="small text-primary text-decoration-none">Forgot password?</a>
+                            </div>
+                            <button type="button" class="btn btn-primary w-100 py-2 fw-semibold mb-3" onclick="signIn();">Log In</button>
+                        </form>
+                        <div class="d-flex align-items-center my-3">
+                            <hr class="flex-grow-1">
+                            <span class="mx-2 text-muted">or</span>
+                            <hr class="flex-grow-1">
+                        </div>
+                        <div class="d-grid gap-2 mb-3">
+                            <button class="btn btn-light border d-flex align-items-center justify-content-center gap-2">
+                                <i class="ri-google-fill text-danger"></i> Log in with Google
+                            </button>
+                            <button class="btn btn-light border d-flex align-items-center justify-content-center gap-2">
+                                <i class="ri-facebook-box-fill text-primary"></i> Log in with Facebook
+                            </button>
+                        </div>
+                        <div class="ll text-center mt-3 medium text-muted mb-4">
+                            Don’t have an account? <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal" class="text-primary text-decoration-none">Sign up</a>
+                        </div>
+                        <div class="mb-4 form-tex">
+                            By signing up, you agree to our <a href="#" class="text-primary text-decoration-none">Terms of Service</a> and <a href="#" class="text-primary text-decoration-none">Privacy Policy</a>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OTP Verification Modal -->
+        <div class="modal fade" id="otpModal" tabindex="-1" aria-labelledby="otpModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow rounded-4">
+                    <div class="modal-header border-0 pb-0">
+                        <h5 class="modal-title fw-bold" id="otpModalLabel">Verify Your Email</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body py-0">
+                        <p class="mb-3 text-muted small">
+                            Please enter the 6-digit verification code we sent to <span id="otpUserEmail" class="fw-semibold"></span>.
+                        </p>
+                        <form id="otpForm">
+                            <div class="mb-3">
+                                <input type="text" class="form-control text-center fw-bold fs-4 letter-spacing-2" id="verificationCode" maxlength="6" pattern="[0-9]*" inputmode="numeric" placeholder="------" required autocomplete="one-time-code">
+                            </div>
+                            <button type="button" class="btn btn-primary w-100 fw-semibold mb-2" onclick="verifyAccount();">Verify</button>
+                        </form>
+                        <div class="text-center small mt-3 mb-3">
+                            Didn’t receive a code?
+                            <a href="#" class="text-primary text-decoration-none" id="resendOtpBtn">Resend</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="publicToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="assets/images/logo/whiteplanet.png" class="rounded me-2" style="height: 40px; vertical-align: middle; margin-left: 2px;">
+                    <strong class="me-auto">SkillVerse</strong>
+                    <small>Now</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="toastBody">
+                    <!-- Message goes here -->
+                </div>
+            </div>
+        </div>
+
+        <script src="assets/js/sign-up.js"></script>
+        <script src="assets/js/verify-account.js"></script>
+        <script src="assets/js/sign-in.js"></script>
+        <script src="assets/js/public-courses.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+
+                                // --- Dark mode persist + animated toggle ---
+                                const logoLight = "assets/images/logo/skillverseblue2.gif";
+                                const logoDark = "assets/images/logo/skillversewhite2.gif";
+
+                                function setDarkMode(isDark) {
+                                    document.body.classList.toggle('dark-mode', isDark);
+                                    document.body.classList.toggle('bg-dark', isDark);
+                                    document.body.classList.toggle('text-white', isDark);
+                                    document.body.classList.toggle('bg-light', !isDark);
+                                    document.body.classList.toggle('text-dark', !isDark);
+                                    // Change logo
+                                    const logoEl = document.getElementById('main-logo');
+                                    if (logoEl)
+                                        logoEl.src = isDark ? logoDark : logoLight;
+                                    localStorage.setItem('mode', isDark ? 'dark' : 'light');
+                                }
+
+                                // On page load
+                                if (localStorage.getItem('mode') === 'dark') {
+                                    setDarkMode(true);
+                                    document.getElementById('toggle-icon').textContent = '☀️';
+                                }
+
+                                // Animate icon on click
+                                document.getElementById('dark-toggle').onclick = function () {
+                                    const btn = this;
+                                    const icon = btn.querySelector('.transition');
+                                    const isDark = !document.body.classList.contains('dark-mode');
+
+                                    // Animate current icon out
+                                    icon.classList.add('spinning');
+                                    setTimeout(() => {
+                                        icon.classList.remove('spinning');
+                                        icon.classList.add('in');
+                                        icon.textContent = isDark ? '☀️' : '🌙';
+                                        // Animate icon in
+                                        setTimeout(() => icon.classList.remove('in'), 300);
+                                    }, 300);
+
+                                    setDarkMode(isDark);
+
+                                    // Optionally re-animate cards for new mode
+                                    if (typeof animateCards === "function")
+                                        animateCards();
+                                };
+        </script>
+    </body>
+</html>

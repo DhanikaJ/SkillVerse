@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Admin Reports - SkillVerse</title>
+        <meta name="robots" content="noindex, follow" />
+        <meta name="description" content="">
+        <link rel="icon" href="assets/images/logo/blackplanet.png" type="image/png">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/reports.css"/>
+    </head>
+    <body onload=" updateCartCount();">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg sticky-top">
+            <div class="container-lg">
+                <a class="navbar-brand d-flex align-items-center" href="home.html">
+                    <img src="assets/images/logo/skillversewhite2.gif" alt="Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto ms-3 mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link me-3" aria-current="page" href="home.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3" href="my-learning.html">My Learning</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3" href="online-degrees.html">Online Degrees</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3" href="my-courses.html">My Courses</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex me-3" role="search">
+                        <input class="form-control bg-dark border-0 text-light me-1" type="search" placeholder="What do you want to learn?" aria-label="Search" style="width:250px">
+                        <button class="btn btn-link text-light text-decoration-none me-4" type="submit"><i class="ri-search-line fs-5"></i></button>
+                    </form>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown ms-3 me-3">
+                            <a href="#" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false" class="text-light text-decoration-none">
+                                <i class="ri-global-line fs-5"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow border-1 mt-2" aria-labelledby="langDropdown" style="min-width: 120px;">
+                                <li><a class="dropdown-item" href="#">English</a></li>
+                                <li><a class="dropdown-item" href="#">සිංහල</a></li>
+                                <li><a class="dropdown-item" href="#">தமிழ்</a></li>
+                            </ul>
+                        </div>
+
+                        <a href="#" class="ms-3 text-light text-decoration-none me-3"><i class="ri-notification-3-line fs-5"></i></a>
+                        <a href="#" id="cartIcon" class="ms-3 text-light text-decoration-none me-4" style="position: relative;" onclick="cartIcon();">
+                            <i class="ri-shopping-cart-2-line fs-5"></i>
+                            <span id="cart-count" class="badge bg-primary position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size:0.78em; min-width:18px;">0</span>
+                        </a>
+
+                        <!-- Profile Dropdown -->
+                        <div class="dropdown">
+                            <a href="#" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" class="d-flex align-items-center text-decoration-none">
+                                <i class="ri-user-3-fill fs-4"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-1 mt-2" aria-labelledby="profileDropdown" style="min-width: 260px; border-radius: 12px;">
+                                <li><a class="dropdown-item py-2" href="profile.html">Profile</a></li>
+                                <li><a class="dropdown-item py-2" href="purchases.html">My Purchases</a></li>
+                                <li><a class="dropdown-item py-2" href="#">Settings</a></li>
+                                <li><a class="dropdown-item py-2" href="instructor.html">My Courses</a></li>
+                                <li><a class="dropdown-item py-2" href="404.html">Accomplishments</a></li>
+                                <li><a class="dropdown-item py-2" href="admin-reports.html">Reports</a></li>
+                                <li><a class="dropdown-item py-2" onclick="signOut();">Log Out</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="px-3 py-2">
+                                    <a href="#" class="fw-semibold text-primary mb-0 d-block" style="font-size: 1.02em;">Get SkillVerse <span class="badge bg-primary text-white ms-1" style="font-size:0.78em; vertical-align: middle;">PLUS</span></a>
+                                    <div class="small text-muted">Access 10,000+ courses</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Wrapper -->
+        <div class="container py-4 dashboard-wrapper d-flex flex-lg-row flex-column gap-4 mb-5">
+
+            <!-- Main Content -->
+            <main class="flex-grow-1">
+                <div class="section-title">My Reports</div>
+
+                <!-- Controls -->
+                <div class="controls-wrapper">
+                    <div class="controls-title">Filters & Controls</div>
+
+                    <div class="row g-3 mb-3 justify-content-between mx-5 mb-5">
+                        <div class="col-md-3">
+                            <label class="form-label text-muted small">From Date</label>
+                            <input type="date" id="from" class="form-control">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label text-muted small">To Date</label>
+                            <input type="date" id="to" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label text-muted small">Limit</label>
+                            <select id="limit" class="form-select">
+                                <option>5</option>
+                                <option selected>10</option>
+                                <option>20</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label text-muted small">&nbsp;</label>
+                            <button id="btn-apply" class="btn btn-primary w-100">Apply Filters</button>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <div class="controls-title">Quick Ranges</div>
+                            <div class="quick-actions">
+                                <button id="btn-today" class="btn btn-outline-secondary btn-sm">Today</button>
+                                <button id="btn-month" class="btn btn-outline-secondary btn-sm">This Month</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="controls-title">Download Reports</div>
+                            <div class="download-actions">
+                                <button id="btn-dl-sales" class="btn btn-success btn-sm">
+                                    <i class="ri-download-line me-1"></i>Sales PDF
+                                </button>
+                                <button id="btn-dl-top" class="btn btn-success btn-sm">
+                                    <i class="ri-download-line me-1"></i>Top Courses PDF
+                                </button>
+                                <button id="btn-dl-users" class="btn btn-success btn-sm">
+                                    <i class="ri-download-line me-1"></i>New Users PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-3">
+                        <div class="card card-metric">
+                            <div class="text-muted small">Total Orders</div>
+                            <div id="m-total-orders" class="display-6">0</div>
+                            <div class="text-muted small">All time</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-metric">
+                            <div class="text-muted small">Total Revenue (LKR)</div>
+                            <div id="m-total-revenue" class="display-6">0.00</div>
+                            <div class="text-muted small">All time</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-metric">
+                            <div class="text-muted small">Orders (Range)</div>
+                            <div id="m-range-orders" class="display-6">0</div>
+                            <div class="text-muted small">Filtered period</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card card-metric">
+                            <div class="text-muted small">Revenue (Range) LKR</div>
+                            <div id="m-range-revenue" class="display-6">0.00</div>
+                            <div class="text-muted small">Filtered period</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Courses Table -->
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center bg-transparent border-bottom" style="border-color: #21262d !important;">
+                        <span class="fw-bold">Top Courses</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Course ID</th>
+                                        <th>Title</th>
+                                        <th class="text-center">Items Sold</th>
+                                        <th class="text-center">Revenue (LKR)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbl-top"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- New Users Card -->
+                <div class="card">
+                    <div class="card-header bg-transparent border-bottom" style="border-color: #21262d !important;">
+                        <span class="fw-bold">New Users (count for range)</span>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="display-6" id="new-users" style="color: #21b6ff; font-weight: 700;">0</div>
+                        <div class="text-muted">Users registered in selected period</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <!--footer-->
+        <div id="footer-placeholder"></div>
+        <script>
+            fetch('footer.html')
+                    .then(res => res.text())
+                    .then(data => {
+                        document.getElementById('footer-placeholder').innerHTML = data;
+                    });
+        </script>
+        <!--footer-->
+        
+        <!--cart-->
+        <div id="cart-drawer-placeholder"></div>
+        <script>
+            fetch('cart-drawer.html')
+                    .then(res => res.text())
+                    .then(data => {
+                        document.getElementById('cart-drawer-placeholder').innerHTML = data;
+                    });
+        </script>
+        <!--cart-->
+        
+        <!--Google Translate script -->
+        <div id="google_translate_element" style="display:none;"></div>
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,si,ta',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                }, 'google_translate_element');
+            }
+
+            // Language change handler
+            function translatePage(lang) {
+                if (lang === 'en') {
+                    // Reset to English
+                    document.cookie = 'googtrans=/en/en;domain=' + window.location.hostname + ';path=/';
+                    location.reload();
+                    return;
+                }
+                var code = '/en/' + lang;
+                document.cookie = 'googtrans=' + code + ';domain=' + window.location.hostname + ';path=/';
+                location.reload();
+            }
+        </script>
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <!--Google Translate script -->
+
+        <script>
+            const qs = (sel) => document.querySelector(sel);
+
+            function getRangeParams() {
+                const from = qs('#from').value;
+                const to = qs('#to').value;
+                const params = new URLSearchParams();
+                if (from)
+                    params.append('from', from);
+                if (to)
+                    params.append('to', to);
+                return params;
+            }
+
+            async function loadSummary() {
+                const params = getRangeParams();
+                params.append('action', 'summary');
+                const res = await fetch('AdminReports?' + params.toString());
+                const json = await res.json();
+                if (json.status) {
+                    const d = json.data;
+                    qs('#m-total-orders').innerText = d.total_orders;
+                    qs('#m-total-revenue').innerText = fmt(d.total_revenue);
+                    qs('#m-range-orders').innerText = d.range_orders;
+                    qs('#m-range-revenue').innerText = fmt(d.range_revenue);
+                }
+            }
+
+            async function loadTopCourses() {
+                const params = getRangeParams();
+                params.append('action', 'top-courses');
+                params.append('limit', qs('#limit').value);
+                const res = await fetch('AdminReports?' + params.toString());
+                const json = await res.json();
+                if (json.status) {
+                    const tbody = qs('#tbl-top');
+                    tbody.innerHTML = '';
+                    (json.data.top_courses || []).forEach(r => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${r.course_id}</td>
+                            <td>${escapeHtml(r.title || '')}</td>
+                            <td class="text-center">${r.items_sold}</td>
+                            <td class="text-center">${fmt(r.revenue)}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            }
+
+            async function loadUsersCount() {
+                const params = getRangeParams();
+                params.append('action', 'users');
+                const res = await fetch('AdminReports?' + params.toString());
+                const json = await res.json();
+                if (json.status) {
+                    qs('#new-users').innerText = json.data.new_users;
+                }
+            }
+
+            function downloadPdf(type) {
+                const params = getRangeParams();
+                params.append('action', 'download');
+                params.append('type', type);
+                params.append('limit', qs('#limit').value);
+                // auto download by navigating to the URL
+                window.location.href = 'AdminReports?' + params.toString();
+            }
+
+            function fmt(n) {
+                n = Number(n || 0);
+                return n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            }
+
+            function escapeHtml(str) {
+                return (str || '').replace(/[&<>"']/g, s => ({
+                        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+                    }[s]));
+            }
+
+            // quick presets
+            qs('#btn-today').addEventListener('click', () => {
+                const now = new Date();
+                const y = now.toISOString().slice(0, 10);
+                qs('#from').value = y;
+                qs('#to').value = y;
+                reloadAll();
+            });
+
+            qs('#btn-month').addEventListener('click', () => {
+                const now = new Date();
+                const y = now.getFullYear();
+                const m = String(now.getMonth() + 1).padStart(2, '0');
+                const first = `${y}-${m}-01`;
+                // last day of month
+                const lastDate = new Date(y, now.getMonth() + 1, 0).getDate();
+                const last = `${y}-${m}-${String(lastDate).padStart(2, '0')}`;
+                qs('#from').value = first;
+                qs('#to').value = last;
+                reloadAll();
+            });
+
+            qs('#btn-apply').addEventListener('click', reloadAll);
+            qs('#limit').addEventListener('change', loadTopCourses);
+
+            qs('#btn-dl-sales').addEventListener('click', () => downloadPdf('sales'));
+            qs('#btn-dl-top').addEventListener('click', () => downloadPdf('top-courses'));
+            qs('#btn-dl-users').addEventListener('click', () => downloadPdf('users'));
+
+            async function reloadAll() {
+                await Promise.all([loadSummary(), loadTopCourses(), loadUsersCount()]);
+            }
+
+            // initial
+            reloadAll();
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script src="assets/js/sign-out.js"></script>
+        <script src="assets/js/cart.js"></script>
+    </body>
+</html>

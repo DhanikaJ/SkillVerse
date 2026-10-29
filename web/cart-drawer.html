@@ -1,0 +1,29 @@
+<div id="cartOverlay" style="display:none; position:fixed; inset:0; background:rgba(22,28,36,0.65); backdrop-filter: blur(3px); z-index:2040;"></div>
+<div id="cartDrawer" style="
+     position: fixed;
+     top: 0;
+     right: -430px;
+     width: 400px;
+     max-width: 100vw;
+     height: 100vh;
+     background: #232d3b;
+     box-shadow: -4px 0 32px 0 #13182d44;
+     z-index:2050;
+     display: flex;
+     flex-direction: column;
+     border-top-left-radius: 22px;
+     border-bottom-left-radius: 22px;
+     overflow-y: auto;
+     ">
+    <div class="p-4 border-bottom d-flex align-items-center justify-content-between" style="border-color:#20252c;">
+        <span class="fw-bold fs-4">Cart</span>
+        <button id="cartClose" class="btn btn-link text-light fs-3 p-0 m-0" style="text-decoration:none;"><i class="ri-close-line"></i></button>
+    </div>
+    <div id="cartItems" class="flex-grow-1 p-3" style="overflow-y:auto;">
+        <!-- Cart items will be rendered here -->
+    </div>
+    <div class="p-4 border-top" style="border-color:#20252c;">
+        <a href="cart.html" class="btn btn-primary w-100 mb-2">View Cart</a>
+        <a href="checkout.html" class="btn btn-success w-100">Checkout</a>
+    </div>
+</div>

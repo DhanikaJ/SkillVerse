@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>SkillVerse</title>
+        <meta name="robots" content="noindex, follow" />
+        <meta name="description" content="">
+        <link rel="icon" href="assets/images/logo/blackplanet.png" type="image/png">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <link rel="stylesheet" href="assets/css/instructor.css"/>
+
+    </head>
+    <body onload="getUserData(); loadData(); updateCartCount();">
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg sticky-top">
+            <div class="container-lg">
+                <a class="navbar-brand d-flex align-items-center" href="home.html">
+                    <img src="assets/images/logo/skillversewhite2.gif" alt="Logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto ms-3 mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link me-3" aria-current="page" href="home.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3" href="my-learning.html">My Learning</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3" href="online-degrees.html">Online Degrees</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link me-3" href="my-courses.html">My Courses</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex me-3" role="search">
+                        <input class="form-control bg-dark border-0 text-light me-1" type="search" placeholder="What do you want to learn?" aria-label="Search" style="width:250px">
+                        <button class="btn btn-link text-light text-decoration-none me-4" type="submit"><i class="ri-search-line fs-5"></i></button>
+                    </form>
+                    <div class="d-flex align-items-center">
+                        <div class="dropdown ms-3 me-3">
+                            <a href="#" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false" class="text-light text-decoration-none">
+                                <i class="ri-global-line fs-5"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow border-1 mt-2" aria-labelledby="langDropdown" style="min-width: 120px;">
+                                <li><a class="dropdown-item" href="#" onclick="translatePage('en')">English</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="translatePage('si')">සිංහල</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="translatePage('ta')">தமிழ்</a></li>
+                                <!-- Add more languages if you want -->
+                            </ul>
+                        </div>
+
+                        <a href="#" class="ms-3 text-light text-decoration-none me-3"><i class="ri-notification-3-line fs-5"></i></a>
+                        <a href="#" id="cartIcon" class="ms-3 text-light text-decoration-none me-4" style="position: relative;" onclick="cartIcon();">
+                            <i class="ri-shopping-cart-2-line fs-5"></i>
+                            <span id="cart-count" class="badge bg-primary position-absolute top-0 start-100 translate-middle rounded-pill" style="font-size:0.78em; min-width:18px;">0</span>
+                        </a>
+
+                        <!-- Profile Dropdown -->
+                        <div class="dropdown">
+                            <a href="#" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" class="d-flex align-items-center text-decoration-none">
+                                <i class="ri-user-3-fill fs-4"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-1 mt-2" aria-labelledby="profileDropdown" style="min-width: 260px; border-radius: 12px;">
+                                <li><a class="dropdown-item py-2" href="profile.html">Profile</a></li>
+                                <li><a class="dropdown-item py-2" href="purchases.html">My Purchases</a></li>
+                                <li><a class="dropdown-item py-2" href="#">Settings</a></li>
+                                <li><a class="dropdown-item py-2" href="instructor.html">My Courses</a></li>
+                                <li><a class="dropdown-item py-2" href="404.html">Accomplishments</a></li>
+                                <li><a class="dropdown-item py-2" href="admin-reports.html">Reports</a></li>
+                                <li><a class="dropdown-item py-2" onclick="signOut();">Log Out</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li class="px-3 py-2">
+                                    <a href="#" class="fw-semibold text-primary mb-0 d-block" style="font-size: 1.02em;">Get Skillverse <span class="badge bg-primary text-white ms-1" style="font-size:0.78em; vertical-align: middle;">PLUS</span></a>
+                                    <div class="small text-muted">Access 10,000+ courses</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Profile Dropdown -->
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!--Navbar -->
+
+        <!-- Main Wrapper -->
+        <div class="container-fluid py-4 dashboard-wrapper d-flex flex-lg-row flex-column gap-4">
+            <!-- Sidebar -->
+            <nav class="sidebar flex-shrink-0 mb-3 mb-lg-0" style="width: 230px;">
+                <a href="#" class="sidebar-link active" data-tab="dashboard"><i class="ri-dashboard-fill"></i>Dashboard</a>
+                <a href="#" class="sidebar-link" data-tab="courses"><i class="ri-book-3-fill"></i>My Courses</a>
+                <a href="#" class="sidebar-link" data-tab="add"><i class="ri-add-circle-fill"></i>Add New Course</a>
+                <a href="#" class="sidebar-link" data-tab="stats"><i class="ri-bar-chart-fill"></i>Course Stats</a>
+                <a href="#" class="sidebar-link" data-tab="feedback"><i class="ri-message-3-fill"></i>Student Feedback</a>
+                <a href="#" class="sidebar-link" data-tab="profile"><i class="ri-user-3-fill"></i>Profile</a>
+            </nav>
+            <!-- Sidebar -->
+
+            <!-- Main Content Tabs -->
+            <main class="flex-grow-1">
+                <!-- Dashboard Home (Quick stats, greeting) -->
+                <section class="tab-section" id="dashboard" style="display:block;">
+                    <div class="section-title" id="firstName">Welcome Back, Instructor!</div>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="stat-card text-center">
+                                <div class="fw-bold fs-4 mb-2"><i class="ri-book-3-fill me-2"></i>12</div>
+                                <div>Courses Uploaded</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card text-center">
+                                <div class="fw-bold fs-4 mb-2"><i class="ri-user-add-fill me-2"></i>228</div>
+                                <div>Total Enrollments</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card text-center">
+                                <div class="fw-bold fs-4 mb-2"><i class="ri-star-fill me-2"></i>4.6</div>
+                                <div>Avg. Course Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Dashboard Home (Quick stats, greeting) -->
+
+                <!-- My Courses Table -->
+                <section class="tab-section" id="courses" style="display:none;">
+                    <div class="section-title">My Courses</div>
+                    <div class="table-responsive">
+                        <table class="table table-dark align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Thumbnail</th>
+                                    <th>Title</th>
+                                    <th>Category</th>
+                                    <th>Students</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><img src="assets/images/courses/course-demo.jpg" width="54" height="54" class="rounded-3"></td>
+                                    <td>Data Analysis Bootcamp</td>
+                                    <td>Data Science</td>
+                                    <td>98</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-2"><i class="ri-pencil-fill"></i> Edit</button>
+                                        <button class="btn btn-sm btn-outline-danger me-2"><i class="ri-delete-bin-2-line"></i> Delete</button>
+                                        <button class="btn btn-sm btn-secondary"><i class="ri-bar-chart-box-line"></i> Stats</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img src="assets/images/courses/python.jpg" width="54" height="54" class="rounded-3"></td>
+                                    <td>Python for Beginners</td>
+                                    <td>Programming</td>
+                                    <td>54</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary me-2"><i class="ri-pencil-fill"></i> Edit</button>
+                                        <button class="btn btn-sm btn-outline-danger me-2"><i class="ri-delete-bin-2-line"></i> Delete</button>
+                                        <button class="btn btn-sm btn-secondary"><i class="ri-bar-chart-box-line"></i> Stats</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+                <!-- My Courses Table -->
+
+                <!-- Add New Course Form -->
+                <section class="tab-section" id="add" style="display:none;">
+                    <div class="section-title">Add New Course</div>
+                    <form>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Course Title <span class="text-danger">*</span></label>
+                                <input class="form-control" type="text" placeholder="e.g. Data Science Bootcamp" id="courseTitle" required>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Category <span class="text-danger">*</span></label>
+                                <select class="form-select" id="courseCategory" required>
+                                    <option value="0" selected>Select Category</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Difficulty <span class="text-danger">*</span></label>
+                                <select class="form-select" id="courseDifficulty" required>
+                                    <option value="">Select Difficulty</option>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Price <span class="text-danger">*</span></label>
+                                <select class="form-select" id="coursePrice" required>
+                                    <option value="">Select Price</option>
+                                    <option>Paid</option>
+                                    <option>Free</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-4">
+                                <label class="form-label">Description <span class="text-danger">*</span></label>
+                                <textarea class="form-control" rows="3" placeholder="Course description..." id="courseDescription"></textarea>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Thumbnail Image <span class="text-danger">*</span></label>
+                                <input class="form-control" type="file" accept="image/*" id="thumbnailImage">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label">Price in LKR <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-dark text-light">LKR</span>
+                                    <input class="form-control" type="number" min="0" step="0.01" placeholder="E.g. 2500.00" id="coursePriceLKR" required>
+                                </div>
+                            </div>
+                            <div class="quiz-section mb-4 p-3 rounded-4 me-3" style="background:#20252c;">
+                                <div class="fw-bold mb-3">Lesson Setup</div>
+                                <div id="lessonsContainer"></div>
+                                <button type="button" class="btn btn-outline-info mt-2" onclick="addLessonBlock()">+ Add Lesson</button>
+                            </div>
+
+                            <div class="quiz-section mb-4 p-3 rounded-4" style="background:#20252c;">
+                                <div class="fw-bold mb-3">Quiz Setup</div>
+                                <!-- Quiz Title (only once) -->
+                                <div class="mb-4">
+                                    <label class="form-label">Quiz Title</label>
+                                    <input class="form-control" type="text" placeholder="Quiz Title" id="quizTitle">
+                                </div>
+                                <!-- Questions Container -->
+                                <div id="questionsContainer"></div>
+                                <!-- Add Question Button -->
+                                <button type="button" class="btn btn-outline-info mt-3" onclick="addQuestion()">+ Add Question</button>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button class="btn btn-primary px-4 py-2" type="submit" ><i class="ri-upload-cloud-fill me-1"></i>Submit Course</button>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+                <!-- Add New Course Form -->
+
+                <!-- Course Stats -->
+                <section class="tab-section" id="stats" style="display:none;">
+                    <div class="section-title">Course Stats</div>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="stat-card text-center">
+                                <div class="fw-bold fs-4 mb-1"><i class="ri-eye-fill me-2"></i>412</div>
+                                <div>Views</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card text-center">
+                                <div class="fw-bold fs-4 mb-1"><i class="ri-user-add-fill me-2"></i>228</div>
+                                <div>Enrollments</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card text-center">
+                                <div class="fw-bold fs-4 mb-1"><i class="ri-checkbox-circle-line me-2"></i>83%</div>
+                                <div>Completion Rate</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card text-center">
+                                <div class="fw-bold fs-4 mb-1 star-rating">
+                                    <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-line"></i> 4.5
+                                </div>
+                                <div>Avg. Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-4 mt-4">
+                        <canvas id="enrollmentsChart" height="90"></canvas>
+                    </div>
+                </section>
+                <!-- Course Stats -->
+
+                <!-- Student Feedback -->
+                <section class="tab-section" id="feedback" style="display:none;">
+                    <div class="section-title">Student Feedback</div>
+                    <div class="card p-4">
+                        <div class="mb-3">
+                            <strong>Jane Smith</strong> <span class="star-rating ms-2"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-line"></i></span>
+                            <div class="small text-muted">"Great explanations, very practical examples!"</div>
+                        </div>
+                        <div>
+                            <strong>Ravindu Perera</strong> <span class="star-rating ms-2"><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-half-line"></i><i class="ri-star-line"></i></span>
+                            <div class="small text-muted">"Quizzes were a little tough but learned a lot!"</div>
+                        </div>
+                    </div>
+                </section>
+                <!-- Student Feedback -->
+
+                <!-- Profile -->
+                <section class="tab-section" id="profile" style="display:none;">
+                    <div class="section-title">My Profile</div>
+                    <div class="card p-4 d-flex flex-row align-items-center">
+                        <img src="assets/images/profile.png" class="profile-img me-4" alt="Profile photo" id="profile-img">
+                        <div>
+                            <div class="fw-bold" style="font-size:1.13em;" id="username">John Doe</div>
+                            <div class="mb-2 text-muted" id="profileemail">doe@skillverse.com</div>
+                            <div id="since">Joined: Jan 2024</div>
+                            <button class="btn btn-outline-primary btn-sm mt-3"><a href="profile.html" target="_self" class="text-decoration-none">Edit Profile</a></button>
+                        </div>
+                    </div>
+                </section>
+                <!-- Profile -->
+            </main>
+        </div>
+
+        <!--footer-->
+        <div id="footer-placeholder"></div>
+        <script>
+            fetch('footer.html')
+                    .then(res => res.text())
+                    .then(data => {
+                        document.getElementById('footer-placeholder').innerHTML = data;
+                    });
+        </script>
+        <!--footer-->
+
+        <!--cart-->
+        <div id="cart-drawer-placeholder"></div>
+        <script>
+            fetch('cart-drawer.html')
+                    .then(res => res.text())
+                    .then(data => {
+                        document.getElementById('cart-drawer-placeholder').innerHTML = data;
+                    });
+        </script>
+        <!--cart-->
+
+        <!--SHOWTOAST-->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="instructorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <img src="assets/images/logo/whiteplanet.png" class="rounded me-2" style="height: 100px; vertical-align: middle; margin-left: 2px;">
+                    <strong class="me-auto">SkillVerse</strong>
+                    <small>Now</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" id="toastBody">
+                    <!-- Message goes here -->
+                </div>
+            </div>
+        </div>
+        <!--SHOWTOAST-->
+
+        <!--LOADER-->
+        <div id="loaderOverlay" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.25); align-items:center; justify-content:center; flex-direction:column;">
+            <img src="assets/images/logo/planetwhite.gif" alt="Loading..." style="width:160px; height:160px;">
+            <div style="margin-top: 18px; color: #222; font-size: 1.3rem; font-weight: 600; background: rgba(255,255,255,0.8); padding: 8px 24px; border-radius: 20px;">
+                Course Uploading...
+            </div>
+        </div>
+        <!--LOADER-->
+
+        <!--Google Translate script -->
+        <div id="google_translate_element" style="display:none;"></div>
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,si,ta',
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+                }, 'google_translate_element');
+            }
+
+            // Language change handler
+            function translatePage(lang) {
+                if (lang === 'en') {
+                    // Reset to English
+                    document.cookie = 'googtrans=/en/en;domain=' + window.location.hostname + ';path=/';
+                    location.reload();
+                    return;
+                }
+                var code = '/en/' + lang;
+                document.cookie = 'googtrans=' + code + ';domain=' + window.location.hostname + ';path=/';
+                location.reload();
+            }
+        </script>
+        <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <!--Google Translate script -->
+
+
+        <!-- JS for sidebar tab navigation + stats chart -->
+        <script>
+            // Sidebar navigation
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.onclick = function (e) {
+                    e.preventDefault();
+                    document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    let tab = this.getAttribute('data-tab');
+                    document.querySelectorAll('.tab-section').forEach(s => s.style.display = 'none');
+                    document.getElementById(tab).style.display = 'block';
+                    if (tab === 'stats') {
+                        setTimeout(renderChart, 150);
+                    }
+                };
+            });
+            // Render Chart.js bar chart in Stats tab
+            function renderChart() {
+                if (window.enrollChart)
+                    return;
+                let ctx = document.getElementById('enrollmentsChart').getContext('2d');
+                window.enrollChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                                label: 'Enrollments',
+                                data: [28, 36, 45, 54, 41, 24],
+                                backgroundColor: '#21b6ff'
+                            }]
+                    },
+                    options: {
+                        plugins: {legend: {display: false}},
+                        scales: {
+                            y: {beginAtZero: true, grid: {color: '#283348'}, ticks: {color: '#fff'}},
+                            x: {grid: {display: false}, ticks: {color: '#fff'}}
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <!--QUESTION BLOCK-->
+        <script>
+            let questionCount = 0;
+            // Helper to create a new question div
+            function addQuestion() {
+                questionCount++;
+                const qDiv = document.createElement('div');
+                qDiv.className = "question-block mb-4 p-3 rounded-3";
+                qDiv.style.background = "#232d3b";
+                qDiv.innerHTML = `
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <span class="fw-semibold">Question ${questionCount}</span>
+      <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2" onclick="this.closest('.question-block').remove()">Remove</button>
+    </div>
+    <div class="mb-3">
+      <input class="form-control" type="text" placeholder="Enter the question text" required>
+    </div>
+    <div class="row g-2 align-items-center">
+      ${['A', 'B', 'C', 'D'].map((l, i) => `
+        <div class="col-12 col-md-6 mb-2">
+          <div class="input-group">
+            <span class="input-group-text bg-dark text-light">${l}</span>
+            <input class="form-control" type="text" placeholder="Answer ${l}" required>
+            <span class="input-group-text bg-dark">
+              <input type="radio" name="correct${questionCount}" value="${i}" style="accent-color:#21b6ff;" title="Mark as correct">
+            </span>
+            <span class="input-group-text bg-dark small">Correct</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+                document.getElementById('questionsContainer').appendChild(qDiv);
+            }
+
+        </script>
+        <!--QUESTION BLOCK-->
+
+        <!--LESSON BLOCK-->
+        <script>
+            let lessonCount = 0;
+
+            function addLessonBlock() {
+                lessonCount++;
+                const lessonsContainer = document.getElementById('lessonsContainer');
+                const div = document.createElement('div');
+                div.className = "lesson-block mb-4 p-3 rounded-3";
+                div.style.background = "#232d3b";
+                div.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-semibold">Lesson ${lessonCount}</span>
+            <button type="button" class="btn btn-sm btn-outline-danger py-0 px-2" onclick="this.closest('.lesson-block').remove()">Remove</button>
+        </div>
+            <div class="col-12 mb-3">
+                <label class="form-label">Lesson Title <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" placeholder="Lesson title" required>
+            </div>
+            <div class="col-12 mb-3">
+                <label class="form-label">Video URL (optional)</label>
+                <input class="form-control mb-2" type="url" placeholder="YouTube/Vimeo URL">
+            </div>
+            <div class="col-12 mb-3">
+                <label class="form-label">Upload Video (optional)</label>
+                <input type="file" accept="video/*" class="form-control">
+            </div>
+            <div class="col-12 mb-3">
+                <label class="form-label">Resource File (PDF, PPT, PPTX, DOC, DOCX) (optional)</label>
+                <input type="file" accept=".pdf,.ppt,.pptx,.doc,.docx" class="form-control" multiple>
+            </div>
+    `;
+                lessonsContainer.appendChild(div);
+            }
+// Auto add the first lesson block
+            addLessonBlock();
+        </script>
+        <!--LESSON BLOCK-->
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="assets/js/sign-out.js"></script>
+        <script src="assets/js/cart.js"></script>
+        <script src="assets/js/instructor-profile.js"></script>
+        <script src="assets/js/add-course.js"></script>
+        <script src="assets/js/cookie.js"></script>
+        <script src="assets/js/reports.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    </body>
+</html>

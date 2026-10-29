@@ -1,0 +1,175 @@
+html, body {
+    height: 100%;
+    background: #161c24 !important;
+    color: #f8f9fa !important;
+    font-family: 'Montserrat', sans-serif;
+}
+.navbar, .navbar .nav-link, .navbar .form-control, .navbar .btn-link {
+    background: #20252c !important;
+    color: #f8f9fa !important;
+    border: none;
+}
+.navbar {
+    box-shadow: 0 4px 16px 0 rgba(20, 24, 44, 0.12);
+}
+.nav-link.active {
+    color: #90caf9 !important;
+    font-weight: 700;
+    border-bottom: 2.5px solid #90caf9;
+    background: transparent !important;
+}
+.card {
+    background: #232d3b;
+    border: 1.5px solid #25314b;
+    color: #f8f9fa;
+    border-radius: 20px;
+    box-shadow: 0 2px 16px 0 rgba(30,34,90,.11);
+    overflow: hidden;
+}
+.gsap-glow {
+    box-shadow: 0 0 24px 0 rgba(60, 180, 255, 0.12), 0 2px 18px 0 rgba(30,34,90,.06);
+    transition: box-shadow 0.3s;
+}
+.gsap-glow:hover {
+    box-shadow: 0 0 32px 0 #54b6ff7a, 0 4px 24px 0 rgba(30,34,90,.15);
+}
+.card-img-top {
+    background: #161c24;
+}
+.text-primary {
+    color: #90caf9 !important;
+}
+.text-warning {
+    color: #ffd54f !important;
+}
+.btn-primary {
+    background: #1976d2;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+.btn-primary:hover, .btn-primary:focus {
+    background: #2196f3;
+}
+.credentials-label {
+    font-size: 1.02rem;
+    color: #90caf9;
+}
+.badge-credential {
+    background: #202b3a;
+    color: #90caf9;
+    font-size: 13px;
+    border: 1px solid #32405c;
+    border-radius: 6px;
+    margin-bottom: 2px;
+    margin-right: 3px;
+    padding: 0.35em 0.75em;
+    vertical-align: middle;
+    display: inline-block;
+}
+.explore-link {
+    font-size: 1.13rem;
+    margin-top: 1.1rem;
+    display: inline-block;
+    color: #90caf9 !important;
+}
+.navbar-brand img {
+    height: 38px;
+    filter: brightness(1.3);
+}
+body.dark-mode .filters-bar label,
+body.dark-mode .filters-bar .fw-semibold {
+    color: #c9d6f3;
+}
+body.dark-mode .ri-moon-line {
+    color: #ffe066;
+}
+body.dark-mode .ri-sun-line {
+    color: #ffd700;
+}
+.filters-bar {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+}
+body.dark-mode .filters-bar {
+    background: #2196f3;
+    color: #c9d6f3;
+    box-shadow: 0 2px 12px rgba(12,16,28,0.24);
+}
+.space-stars {
+    background: linear-gradient(135deg, #131c3c 60%, #31427a 100%);
+    color: #e3f6fd;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31,64,145,0.12);
+    position: relative;
+    overflow: hidden;
+}
+.space-stars::before {
+    content: "";
+    position: absolute;
+    left:0; top:0; width:100%; height:100%;
+    background: url('https://svgshare.com/i/11pA.svg') repeat;
+    opacity: 0.14;
+    pointer-events: none;
+}
+/* Responsive grid spacing */
+@media (max-width: 767px) {
+    .filters-bar {
+        padding: 1rem;
+    }
+}
+@media (max-width: 991.98px) {
+    .container-lg {
+        padding-left: 16px !important;
+        padding-right: 16px !important;
+    }
+}
+@media (max-width: 767.98px) {
+    .card-img-top {
+        height: 120px !important;
+    }
+    .career-section {
+        padding-top: 1.1rem;
+    }
+}
+.career-section {
+    padding-top: 2.7rem;
+    padding-bottom: 2.2rem;
+}
+/* Dark mode pagination */
+#course-pagination.pagination-dark .page-link{
+  background:#1f2937;            /* slate-800 */
+  color:#e5e7eb;                 /* gray-200 */
+  border-color:#2d3748;          /* slate-700 */
+  transition:background .15s, color .15s, border-color .15s, box-shadow .15s;
+  border-radius:999px;           /* pill look */
+}
+
+#course-pagination.pagination-dark .page-link:hover{
+  background:#2a3441;            /* slightly lighter */
+  color:#fff;
+  border-color:#2a3441;
+}
+
+#course-pagination.pagination-dark .page-item.active .page-link{
+  background:#4C84FF;            /* your brand primary */
+  color:#fff;
+  border-color:#4C84FF;
+  box-shadow:0 0 0 .2rem rgba(76,132,255,.25);
+}
+
+#course-pagination.pagination-dark .page-item.disabled .page-link{
+  color:#9ca3af;                 /* gray-400 */
+  background:#1f2937;
+  border-color:#2d3748;
+  opacity:.65;
+}
+
+#course-pagination.pagination-dark .page-link:focus-visible{
+  outline:0;
+  box-shadow:0 0 0 .2rem rgba(76,132,255,.35);
+}
+

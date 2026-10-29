@@ -1,0 +1,159 @@
+html,body {
+    height:100%;
+    margin:0;
+    padding:0;
+    overflow:hidden;
+    font-family: 'Poppins', sans-serif;
+    background: #131c3c;
+}
+body {
+    min-height:100vh;
+    width:100vw;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.star-bg, .nebula-bg, .planet-bg, .shooting-bg {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    z-index:0;
+    pointer-events:none;
+}
+.star {
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.7);
+    width:2.2px;
+    height:2.2px;
+    opacity:0.8;
+    box-shadow:0 0 8px 1px #fff9,0 0 14px 2px #92f5ff33;
+}
+.nebula {
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    opacity:0.19;
+    filter: blur(44px);
+    transition: transform 0.3s cubic-bezier(.5,.04,.6,1.17);
+    will-change: transform;
+}
+.planet {
+    position:absolute;
+    border-radius:50%;
+    opacity:0.76;
+    pointer-events:none;
+    box-shadow: 0 0 60px 0 #202b64c2, 0 0 0 10px #0002;
+    animation: planetfloat 8s ease-in-out infinite alternate;
+    transition: transform 0.3s;
+    will-change: transform;
+}
+@keyframes planetfloat {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        transform: translateY(-24px) scale(1.04);
+    }
+}
+.shooting-star {
+    position:absolute;
+    width:2px;
+    height:110px;
+    background: linear-gradient(180deg,#fff,rgba(255,255,255,0));
+    opacity:0.28;
+    z-index:2;
+    border-radius: 2px;
+    filter: blur(0.7px);
+    animation: shoot 1.4s linear forwards;
+}
+@keyframes shoot {
+    0% {
+        opacity:0;
+        transform:translateY(-70px) scaleX(0.4) scaleY(1);
+    }
+    12% {
+        opacity:0.6;
+    }
+    80% {
+        opacity:1;
+    }
+    100% {
+        opacity:0;
+        transform:translateY(540px) scaleX(1.2) scaleY(0.87);
+    }
+}
+.main-content {
+    z-index:3;
+    text-align:center;
+    position:relative;
+    color:#fafdff;
+    filter: drop-shadow(0 4px 28px #011d3ea2);
+    will-change: transform;
+    transition: transform 0.35s cubic-bezier(.51,-0.05,.57,1.19);
+}
+.main-content h1 {
+    font-size:8rem;
+    font-weight:900;
+    letter-spacing:2px;
+    margin:0 0 0.6em 0;
+    background:linear-gradient(120deg,#7befff 25%,#b09cff 70%,#92ffe5 95%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    animation: float404 4.7s ease-in-out infinite alternate;
+}
+@keyframes float404 {
+    0% {
+        transform:translateY(0);
+    }
+    100% {
+        transform:translateY(-15px);
+    }
+}
+.main-content h2 {
+    font-size:2.3rem;
+    margin-bottom:1.3em;
+    font-weight:400;
+    color:#c2e8ff;
+    text-shadow:0 2px 12px #97e3ff44;
+    animation: fadeup404 2.6s cubic-bezier(.4,.03,.61,.96) both;
+}
+@keyframes fadeup404 {
+    0% {
+        opacity:0;
+        transform:translateY(40px);
+    }
+    100% {
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+.main-content p {
+    font-size:1.15rem;
+    opacity:0.78;
+    margin-bottom:2em;
+    animation: fadeup404 3.2s 0.5s both;
+}
+.main-content a {
+    display:inline-block;
+    padding:0.9em 2.7em;
+    font-size:1.2rem;
+    font-weight:700;
+    background:linear-gradient(110deg,#00c6fb 40%, #005bea 100%);
+    color:#fff;
+    border-radius:2em;
+    text-decoration:none;
+    letter-spacing:0.03em;
+    box-shadow: 0 2px 20px 0 #3ba7fb33;
+    transition: background 0.23s, transform 0.17s;
+    animation: fadeup404 2s 0.85s both;
+}
+.main-content a:hover {
+    background:linear-gradient(110deg,#005bea 10%, #00c6fb 90%);
+    transform:translateY(-3px) scale(1.045);
+    box-shadow:0 8px 32px 0 #00c6fb3b;
+}
