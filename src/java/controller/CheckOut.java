@@ -138,8 +138,8 @@ public class CheckOut extends HttpServlet {
             System.out.println("[DEBUG] Order verification successful. Order " + orderId + " exists with total: " + verifyOrder.getTotal());
 
             // 6. Prepare PayHere params (after successful commit)
-            String merchantId = "1224974";
-            String merchantSecret = "OTc2MzYzNzUzNDg2MDkyNjMyMTU1OTY3NDkwMjE4Mzg3OTI4Njc=";
+            String merchantId = "xxxxxxx";
+            String merchantSecret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
             String orderCode = "#000" + orderId;
             String currency = "LKR";
             String formattedAmount = String.format("%.2f", total);
