@@ -66,7 +66,7 @@ A static build of the real front end with simulated backend responses and fictio
 | Layer | Technology |
 |---|---|
 | Language / runtime | Java (project source level 1.7; the code also calls `URLEncoder.encode(String, Charset)`, so it needs **JDK 10+** to compile) |
-| Web layer | Java Servlet 3 (annotation-mapped), servlet filters; **no JSP** — HTML pages call JSON endpoints with `fetch()` |
+| Web layer | Java Servlet 3 (annotation-mapped), servlet filters; **no JSP** - HTML pages call JSON endpoints with `fetch()` |
 | Persistence | **Hibernate 4.3.1** (annotation mapping, Criteria API) on **MySQL**, driver `mysql-connector-j 8.4.0` |
 | Front end | HTML5, JavaScript (vanilla), **Bootstrap 5.3.3** (CDN), Remix Icon, Chart.js, GSAP |
 | JSON | Gson 2.10.1 |
@@ -93,7 +93,7 @@ Servlet filters ──► Servlets (controller/*)          Cloudinary           
 ```
 
 - **Filters** (`model/`): `SignInCheckFilter` guards member pages and redirects to `index.html`; `SessionFilter` sends already-signed-in visitors from the landing page to `home.html`; `NotFoundFilter` serves `404.html`.
-- **Servlets** (`controller/`): one per action — sign-in/up/verify, course list/details, cart, checkout, payment verification, lessons, learning, purchases, profile, reports.
+- **Servlets** (`controller/`): one per action - sign-in/up/verify, course list/details, cart, checkout, payment verification, lessons, learning, purchases, profile, reports.
 - **Entities** (`hibernate/`): 15 annotated classes registered in `hibernate.cfg.xml`.
 - **Payment flow:** `CheckOut` creates a *pending* order and signs the PayHere request; PayHere calls `VerifyPayments` (`notify_url`), which checks the MD5 signature and amount, marks the order paid, writes `payment` rows, creates `enrollment` rows and clears the cart.
 
@@ -106,7 +106,7 @@ SkillVerse/
 │   │   ├── controller/        # Servlets (JSON endpoints)
 │   │   ├── hibernate/         # JPA/Hibernate entities + HibernateUtil
 │   │   ├── model/             # Mail, PayHere hashing, validation Util, filters
-│   │   └── hibernate.cfg.xml  # NOT in git (git-ignored) — you create it
+│   │   └── hibernate.cfg.xml  # NOT in git (git-ignored) - you create it
 │   └── docs/                  # README screenshots
 ├── web/
 │   ├── *.html                 # Pages (index, home, course-view, lesson, cart, checkout, ...)
@@ -151,7 +151,7 @@ user ──< course ──< lesson
 
 ### Prerequisites
 
-- **A JDK your GlassFish version supports, 10 or newer to compile** — `DownloadResource.java` uses a Java 10 API, while the JAXB classes used by `PayHere.java` (`javax.xml.bind`) were removed from the JDK in 11 and must come from the project's endorsed library or the server
+- **A JDK your GlassFish version supports, 10 or newer to compile** - `DownloadResource.java` uses a Java 10 API, while the JAXB classes used by `PayHere.java` (`javax.xml.bind`) were removed from the JDK in 11 and must come from the project's endorsed library or the server
 - **GlassFish 5.x** (the project targets Java EE 8 / `gfv5ee8`; it provides `javax.mail`)
 - **MySQL 5.7 / 8** with a database named `skillverse`
 - **Apache NetBeans** (project is a NetBeans Web Application)
@@ -229,7 +229,7 @@ Command line alternative: `ant dist` produces `dist/SkillVerse.war`, which you c
 
 ## Configuration
 
-Secrets and environment-specific URLs are read by `model/AppConfig.java` from **JVM system properties first, then environment variables** — nothing secret lives in source control.
+Secrets and environment-specific URLs are read by `model/AppConfig.java` from **JVM system properties first, then environment variables** - nothing secret lives in source control.
 
 | Setting | Required for | Notes |
 |---|---|---|
@@ -286,7 +286,7 @@ This project is a learning/portfolio build, not production-ready. Known gaps:
 
 ## Roadmap
 
-- [x] Externalise configuration (environment variables) — *remember to rotate any secrets that were previously committed*
+- [x] Externalise configuration (environment variables) - *remember to rotate any secrets that were previously committed*
 - [x] Salted password hashing; no password in cookies / browser storage
 - [ ] Role-based access (learner / instructor / admin), enrollment gating
 - [ ] `schema.sql` + `seed.sql`, `hibernate.cfg.xml.example`, dependencies in `pom.xml`
@@ -305,8 +305,8 @@ This project is a learning/portfolio build, not production-ready. Known gaps:
 
 ## License
 
-Licensed under the **Apache License 2.0** — see [`LICENSE`](LICENSE).
+Licensed under the **Apache License 2.0** - see [`LICENSE`](LICENSE).
 
 ## Author
 
-**DhanikaJ** — [github.com/DhanikaJ](https://github.com/DhanikaJ)
+**DhanikaJ** - [github.com/DhanikaJ](https://github.com/DhanikaJ)
