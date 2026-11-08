@@ -7,3 +7,6 @@ nbproject/private/
 .env.*
 src/java/hibernate.cfg.xml
 project-notes/
+# static demo build output
+demo/dist/
+demo/readme.md

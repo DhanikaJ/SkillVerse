@@ -8,6 +8,10 @@
 
 > **Status:** academic / portfolio project, runs locally on GlassFish. Payments use the **PayHere sandbox** only. See [Known limitations](#known-limitations) before deploying anywhere public.
 
+## Live demo
+
+A static build of the real front end with simulated backend responses and fictional test data can be hosted on Vercel. It comes with ready-made logins (learner and instructor) and a sandbox checkout. See [`demo/README.md`](demo/README.md) for the logins, how it works and how to deploy it.
+
 ## Table of Contents
 
 - [Features](#features)

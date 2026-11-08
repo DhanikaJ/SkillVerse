@@ -63,8 +63,13 @@ function closeCart() {
             document.getElementById("cartOverlay").style.display = "none";
         }});
 }
-document.getElementById("cartClose").onclick = closeCart;
-document.getElementById("cartOverlay").onclick = closeCart;
+// The drawer markup is fetched after this script runs, so use event delegation instead of
+// binding to elements that may not exist yet (the old direct binding threw on page load).
+document.addEventListener("click", function (e) {
+    if (e.target.closest && (e.target.closest("#cartClose") || e.target.id === "cartOverlay")) {
+        closeCart();
+    }
+});
 
 // Remove item from cart (live)
 document.addEventListener("click", async function (e) {

@@ -122,6 +122,10 @@ async function getUserData() {
     if (response.ok) {
         const json = await response.json();
         document.getElementById("profile-img").src = json.photo ? json.photo : "assets/images/profile.png";
+        const greeting = document.getElementById("greeting");
+        if (greeting && json.name) {
+            greeting.textContent = "Good afternoon, " + json.name;
+        }
     } else {
         document.getElementById("profile-img").src = "assets/images/profile.png";
     }
