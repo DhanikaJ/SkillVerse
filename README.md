@@ -4,348 +4,305 @@
   <img src="src/docs/home.png" alt="SkillVerse home page" width="900">
 </p>
 
-**SkillVerse** is a web-based online learning platform that enables learners to discover, purchase, and complete courses while giving instructors and administrators tools to manage educational content and platform activity. It is built as a Java web application using Apache NetBeans, with a responsive HTML/CSS interface styled using Tailwind CSS.
+**SkillVerse** is an online learning marketplace built with Java servlets, Hibernate and MySQL. Learners browse courses, add them to a cart, pay through the PayHere sandbox and study from their *My Learning* area. Any signed-in user can also publish a course with video lessons, downloadable resources and a quiz. An admin-style reports page offers sales, top-course and new-user reports with PDF export.
+
+> **Status:** academic / portfolio project, runs locally on GlassFish. Payments use the **PayHere sandbox** only. See [Known limitations](#known-limitations) before deploying anywhere public.
 
 ## Table of Contents
 
-- [Overview](#overview)
 - [Features](#features)
 - [Screenshots](#screenshots)
 - [Technology Stack](#technology-stack)
 - [Architecture](#architecture)
 - [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
+- [Data Model](#data-model)
+- [Getting Started](#getting-started)
 - [Configuration](#configuration)
-- [Running the Application](#running-the-application)
-- [Building for Production](#building-for-production)
-- [Usage](#usage)
-- [Security Considerations](#security-considerations)
+- [Usage Walkthrough](#usage-walkthrough)
+- [Known Limitations](#known-limitations)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
 - [Author](#author)
 
-## Overview
-
-SkillVerse provides a complete learning-commerce workflow: users can browse public courses, view course details, add courses to a cart, complete checkout, access purchased learning material, and track their learning progress. The platform also includes instructor-facing pages and administrative reporting views.
-
-The application follows a conventional Java web-application structure, separating server-side Java logic, web resources, configuration, and documentation assets. The front end uses HTML pages and Tailwind CSS, while the backend is implemented in Java and deployed through a servlet-compatible web container. [24][25][26]
-
 ## Features
 
-### Learner Features
+### Learners
+- Public landing page and course catalogue with category filter and search
+- Course detail page with lesson outline
+- Sign up with **email verification code**, sign in, optional "remember me"
+- Shopping cart (guests and signed-in users), cart drawer with live item count
+- Checkout through **PayHere** (sandbox, LKR) with server-side order total and signed payment-notification verification
+- **My Learning** with in-progress / completed tabs, **lesson player** (video + downloadable resources)
+- Purchase history and profile page (photo, city, gender)
 
-- Browse publicly available courses
-- View detailed course information
-- Add courses to a shopping cart
-- Manage cart items before checkout
-- Complete the checkout workflow
-- Access purchased courses through **My Learning**
-- View lesson content through the course lesson interface
-- Track purchased courses and purchase history
+### Instructors
+- Create a course: title, description, category, difficulty, price (free / paid), thumbnail
+- Add ordered lessons, each with a video and a resource file (uploaded to **Cloudinary** from the browser)
+- Author a quiz (multiple choice, four options) per course
+- *My Courses* list of published courses
 
-### Instructor Features
+### Reports
+- Summary, top courses and new-user reports over a date range
+- PDF export of each report (iText)
 
-- Instructor dashboard and course-management interface
-- Course content organization
-- Learning-material access through lesson pages
-
-### Administrative Features
-
-- Administrative reporting dashboard
-- Platform activity and business reporting views
-- Course and user-management support
+> There is no role system yet: every signed-in user can reach the instructor and reports pages. See [Known limitations](#known-limitations).
 
 ## Screenshots
 
-### Landing Page
-
-The landing page introduces SkillVerse and provides entry points for discovering courses and platform features.
-
-![SkillVerse landing page](src/docs/index.png)
-
-### Home Dashboard
-
-The home dashboard presents accessible navigation for courses, learning activity, and account-related actions.
-
-![SkillVerse home dashboard](src/docs/home.png)
-
-### Course Details
-
-Learners can inspect individual course information before enrolling or purchasing.
-
-![Course details page](src/docs/single-product-view.png)
-
-### Lesson View
-
-The lesson view provides access to course learning material.
-
-![Lesson view](src/docs/lesson.png)
-
-### My Learning
-
-The My Learning area allows learners to access and continue their enrolled courses.
-
-![My Learning dashboard](src/docs/my-learning.png)
-
-### Shopping Cart
-
-The cart allows learners to review selected courses before proceeding to checkout.
-
-![Shopping cart](src/docs/cart.png)
-
-### Purchase History
-
-The purchase history view provides a record of completed course transactions.
-
-![Purchase history](src/docs/history.png)
-
-### Admin Reports
-
-Administrative reports provide insight into platform activity and course performance.
-
-![Admin reports](src/docs/reports.png)
+| | |
+|---|---|
+| ![Landing page](src/docs/index.png) **Landing page** | ![Home](src/docs/home.png) **Home** |
+| ![Course details](src/docs/single-product-view.png) **Course details** | ![Lesson view](src/docs/lesson.png) **Lesson view** |
+| ![My Learning](src/docs/my-learning.png) **My Learning** | ![Cart](src/docs/cart.png) **Cart** |
+| ![Purchase history](src/docs/history.png) **Purchase history** | ![Admin reports](src/docs/reports.png) **Reports** |
 
 ## Technology Stack
 
 | Layer | Technology |
 |---|---|
-| Backend | Java |
-| Web framework | Java Servlet / JSP-based web application |
-| Front end | HTML5, CSS3, JavaScript |
-| Styling | Tailwind CSS |
-| CSS tooling | PostCSS and Autoprefixer |
-| Build tool | Apache Ant |
-| IDE | Apache NetBeans |
-| Application server | Apache Tomcat or another Jakarta/Java EE-compatible servlet container |
-| Package management | npm |
-| License | ISC |
-
-The repository includes `build.xml`, `web/WEB-INF`, Java source under `src/java`, and Tailwind-related development dependencies in `package.json`. [23][24][25][26]
+| Language / runtime | Java (project source level 1.7; the code also calls `URLEncoder.encode(String, Charset)`, so it needs **JDK 10+** to compile) |
+| Web layer | Java Servlet 3 (annotation-mapped), servlet filters; **no JSP** — HTML pages call JSON endpoints with `fetch()` |
+| Persistence | **Hibernate 4.3.1** (annotation mapping, Criteria API) on **MySQL**, driver `mysql-connector-j 8.4.0` |
+| Front end | HTML5, JavaScript (vanilla), **Bootstrap 5.3.3** (CDN), Remix Icon, Chart.js, GSAP |
+| JSON | Gson 2.10.1 |
+| PDF | iText 5.5.13.2 |
+| Email | JavaMail over Gmail SMTP (verification codes) |
+| Payments | PayHere (sandbox) |
+| Media storage | Cloudinary (unsigned upload preset) |
+| Build / IDE | Apache Ant via **Apache NetBeans** project |
+| Application server | **GlassFish 5** (Java EE 8 / `gfv5ee8`) |
 
 ## Architecture
 
-SkillVerse follows a layered Java web-application architecture:
-
 ```text
-Browser / Client
-      │
-      ▼
-HTML, CSS, JavaScript Front End
-      │
-      ▼
-Java Servlet / Web Layer
-      │
-      ▼
-Application Logic
-      │
-      ▼
-Data / External Services
+Browser (static HTML + vanilla JS, Bootstrap)
+   │  fetch() JSON            │  direct upload            │  PayHere checkout popup
+   ▼                          ▼                           ▼
+Servlet filters ──► Servlets (controller/*)          Cloudinary                PayHere
+ SignInCheckFilter     │  Gson ⇄ JSON                                              │
+ SessionFilter         ▼                                                           │ notify_url
+ NotFoundFilter     Hibernate entities (hibernate/*)  ◄──── VerifyPayments ◄───────┘
+                       │
+                       ▼
+                     MySQL  (schema: skillverse)
 ```
 
-- **Presentation layer:** HTML pages, assets, and Tailwind-based styling.
-- **Web layer:** Java classes and servlet configuration under `src/java` and `src/conf`.
-- **Application layer:** Course, cart, checkout, learning, instructor, and reporting workflows.
-- **Deployment layer:** NetBeans/Ant build output deployed to a servlet container.
+- **Filters** (`model/`): `SignInCheckFilter` guards member pages and redirects to `index.html`; `SessionFilter` sends already-signed-in visitors from the landing page to `home.html`; `NotFoundFilter` serves `404.html`.
+- **Servlets** (`controller/`): one per action — sign-in/up/verify, course list/details, cart, checkout, payment verification, lessons, learning, purchases, profile, reports.
+- **Entities** (`hibernate/`): 15 annotated classes registered in `hibernate.cfg.xml`.
+- **Payment flow:** `CheckOut` creates a *pending* order and signs the PayHere request; PayHere calls `VerifyPayments` (`notify_url`), which checks the MD5 signature and amount, marks the order paid, writes `payment` rows, creates `enrollment` rows and clears the cart.
 
 ## Project Structure
 
 ```text
 SkillVerse/
 ├── src/
-│   ├── conf/              # Application and server configuration
-│   ├── java/              # Java backend source code
-│   └── docs/              # README screenshots and documentation assets
-│       ├── cart.png
-│       ├── history.png
-│       ├── home.png
-│       ├── index.png
-│       ├── lesson.png
-│       ├── my-learning.png
-│       ├── reports.png
-│       └── single-product-view.png
+│   ├── java/
+│   │   ├── controller/        # Servlets (JSON endpoints)
+│   │   ├── hibernate/         # JPA/Hibernate entities + HibernateUtil
+│   │   ├── model/             # Mail, PayHere hashing, validation Util, filters
+│   │   └── hibernate.cfg.xml  # NOT in git (git-ignored) — you create it
+│   └── docs/                  # README screenshots
 ├── web/
-│   ├── WEB-INF/           # Web deployment configuration
-│   ├── assets/            # Static assets
-│   ├── index.html         # Landing page
-│   ├── home.html          # Home dashboard
-│   ├── course-view.html   # Course detail page
-│   ├── lesson.html        # Lesson viewer
-│   ├── cart.html          # Shopping cart
-│   ├── checkout.html      # Checkout workflow
-│   ├── my-learning.html   # Learner dashboard
-│   ├── purchases.html     # Purchase history
-│   ├── instructor.html    # Instructor interface
-│   └── admin-reports.html # Administrative reports
-├── build/                 # Compiled build output
-├── dist/                  # Distributable build artifacts
-├── lib/                   # Project dependencies
-├── nbproject/             # NetBeans project metadata
-├── node_modules/          # npm dependencies
-├── build.xml              # Apache Ant build script
-├── package.json           # npm project configuration
-└── package-lock.json      # Locked npm dependency versions
+│   ├── *.html                 # Pages (index, home, course-view, lesson, cart, checkout, ...)
+│   ├── assets/{css,js,images,videos}
+│   └── WEB-INF/glassfish-web.xml
+├── lib/                       # NetBeans library definitions + Java EE endorsed jars
+├── nbproject/                 # NetBeans / Ant project metadata
+├── build.xml
+├── LICENSE                    # Apache License 2.0
+└── README.md
 ```
 
-## Prerequisites
+## Data Model
 
-Install the following before setting up the project:
+Tables used by the entities (all `IDENTITY` primary keys):
 
-- JDK 11 or later
-- Apache NetBeans 12.0 or later
-- Apache Tomcat 9+ or another compatible servlet container
-- Apache Ant
-- Node.js 18+ and npm
+`user`, `status`, `city`, `gender`, `category`, `course`, `lesson`, `quiz`, `quiz_question`, `cart`, `orders`, `order_item`, `payment`, `payment_method`, `enrollment`.
 
-## Installation
+```text
+user ──< course ──< lesson
+  │         └──< quiz ──< quiz_question
+  ├──< cart >── course
+  ├──< orders ──< order_item >── course
+  ├──< payment >── course        (payment_method, status)
+  └──< enrollment >── course     (progress %, status)
+```
 
-Clone the repository:
+**Lookup rows the code expects by ID** (IDs are hard-coded in the servlets):
+
+| Table | ID | Meaning |
+|---|---|---|
+| `status` | 1 | Active (new users, new courses) |
+| `status` | 3 | Pending (new orders) |
+| `status` | 8 | Success (paid orders, payments, enrollments) |
+| `payment_method` | 1 | PayHere |
+
+`category`, `city` and `gender` rows feed the dropdowns on the course form and profile page.
+
+> A ready-made `schema.sql` / `seed.sql` is **not yet in the repository**. Hibernate is not configured to create tables, so create them from the entity classes in `src/java/hibernate` until those scripts are added.
+
+## Getting Started
+
+### Prerequisites
+
+- **A JDK your GlassFish version supports, 10 or newer to compile** — `DownloadResource.java` uses a Java 10 API, while the JAXB classes used by `PayHere.java` (`javax.xml.bind`) were removed from the JDK in 11 and must come from the project's endorsed library or the server
+- **GlassFish 5.x** (the project targets Java EE 8 / `gfv5ee8`; it provides `javax.mail`)
+- **MySQL 5.7 / 8** with a database named `skillverse`
+- **Apache NetBeans** (project is a NetBeans Web Application)
+- Accounts for the external services you want to use: Gmail app password (email), PayHere sandbox merchant, Cloudinary
+
+### 1. Clone
 
 ```bash
-git clone [https://github.com/DhanikaJ/SkillVerse.git](https://github.com/DhanikaJ/SkillVerse.git)
+git clone https://github.com/DhanikaJ/SkillVerse.git
 cd SkillVerse
 ```
 
-Install front-end development dependencies:
+### 2. Dependencies
 
-```bash
-npm install
+The build expects these jars (versions as used by the project). Today `lib/nblibraries.properties` and `nbproject/project.properties` point at a local folder (`Desktop/Java Files/SAD/...`), so **update those paths to wherever you keep the jars**, or add the jars to `web/WEB-INF/lib`:
+
+- Hibernate 4.3.1.Final bundle (hibernate-core, -entitymanager, -c3p0, -ehcache, antlr, dom4j, javassist, jboss-logging, …)
+- `mysql-connector-j-8.4.0`
+- `gson-2.10.1`
+- `itextpdf-5.5.13.2`
+- log4j 2.17.1 (`api`, `core`, `jcl`)
+
+### 3. Database
+
+```sql
+CREATE DATABASE skillverse CHARACTER SET utf8mb4;
 ```
 
-Open the project in Apache NetBeans:
+Create the tables (see [Data Model](#data-model)) and insert the lookup rows listed above.
 
-1. Launch Apache NetBeans.
-2. Select **File → Open Project**.
-3. Choose the cloned `SkillVerse` directory.
-4. Allow NetBeans to resolve project dependencies and configuration.
+### 4. Hibernate configuration
+
+Create `src/java/hibernate.cfg.xml` (it is git-ignored on purpose):
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/skillverse?useSSL=false</property>
+    <property name="hibernate.connection.username">YOUR_DB_USER</property>
+    <property name="hibernate.connection.password">YOUR_DB_PASSWORD</property>
+    <property name="hibernate.show_sql">false</property>
+
+    <mapping class="hibernate.User"/>
+    <mapping class="hibernate.Status"/>
+    <mapping class="hibernate.City"/>
+    <mapping class="hibernate.Gender"/>
+    <mapping class="hibernate.Category"/>
+    <mapping class="hibernate.Course"/>
+    <mapping class="hibernate.Lesson"/>
+    <mapping class="hibernate.Quiz"/>
+    <mapping class="hibernate.QuizQuestion"/>
+    <mapping class="hibernate.Cart"/>
+    <mapping class="hibernate.Orders"/>
+    <mapping class="hibernate.OrderItem"/>
+    <mapping class="hibernate.Payment"/>
+    <mapping class="hibernate.PaymentMethod"/>
+    <mapping class="hibernate.Enrollment"/>
+  </session-factory>
+</hibernate-configuration>
+```
+
+### 5. Run
+
+1. In NetBeans: **File → Open Project** → select the cloned folder.
+2. Add your GlassFish 5 server under **Services → Servers**.
+3. Right-click the project → **Clean and Build** → **Run**.
+4. Open <http://localhost:8080/SkillVerse/>.
+
+Command line alternative: `ant dist` produces `dist/SkillVerse.war`, which you can deploy with `asadmin deploy` or the GlassFish admin console.
 
 ## Configuration
 
-Before deployment, configure environment-specific values such as database credentials, application URLs, payment-provider keys, and mail settings through secure configuration mechanisms.
+Secrets and environment-specific URLs are read by `model/AppConfig.java` from **JVM system properties first, then environment variables** — nothing secret lives in source control.
 
-Recommended practice:
+| Setting | Required for | Notes |
+|---|---|---|
+| `MAIL_USER` | Sign-up verification email | Gmail address |
+| `MAIL_PASSWORD` | Sign-up verification email | A Gmail **app password** (not your login password) |
+| `PAYHERE_MERCHANT_ID` | Checkout + payment verification | From the PayHere sandbox merchant panel |
+| `PAYHERE_MERCHANT_SECRET` | Checkout + payment verification | Same panel; keep private |
+| `PAYHERE_SANDBOX` | optional | `true` (default) or `false` |
+| `APP_BASE_URL` | optional | Public URL incl. context path. Default `http://localhost:8080/SkillVerse`. Used for PayHere return/cancel URLs. |
+| `PAYHERE_NOTIFY_URL` | optional | Default `APP_BASE_URL/VerifyPayments`. PayHere must be able to reach it, so on a local machine set it to a public tunnel URL (e.g. ngrok). |
 
-- Do not commit secrets, API keys, passwords, or production database credentials.
-- Use environment variables, a server-managed context configuration, or a secrets manager.
-- Maintain separate configurations for development, staging, and production environments.
-- Ensure the configured database schema and connection settings match the backend expectations.
-
-## Running the Application
-
-### Using Apache NetBeans
-
-1. Open the project in NetBeans.
-2. Select the configured Apache Tomcat server.
-3. Right-click the project.
-4. Choose **Clean and Build**.
-5. Select **Run**.
-
-### Using Apache Ant
-
-Build and deploy the application using Ant:
+On GlassFish, set them as JVM options, for example:
 
 ```bash
-ant clean
-ant build
+asadmin create-jvm-options "-DMAIL_USER=you@gmail.com:-DMAIL_PASSWORD=your-app-password"
+asadmin create-jvm-options "-DPAYHERE_MERCHANT_ID=123456:-DPAYHERE_MERCHANT_SECRET=your-secret"
 ```
 
-Deploy the generated artifact from the `dist/` directory to your servlet container.
+(or export them as environment variables before starting the server). A missing setting produces a clear "Missing configuration: …" error naming the key.
 
-## Building for Production
+Cloudinary's cloud name and unsigned upload preset are still in the browser scripts `web/assets/js/add-course.js` and `web/assets/js/user-profile.js`.
 
-For a production deployment:
+**Never commit real credentials.**
 
-```bash
-npm install
-ant clean
-ant build
+### Database migration for password hashing
+
+Passwords are now stored as salted PBKDF2 hashes (about 118 characters), so widen the column once:
+
+```sql
+ALTER TABLE `user` MODIFY password_hash VARCHAR(255) NOT NULL;
 ```
 
-Then deploy the resulting web application archive or build output to a hardened production servlet container.
+Existing accounts with a plain-text password keep working: their password is re-saved as a hash the first time they sign in. New sign-ups and password changes fail until the column is widened.
 
-Recommended production practices:
+## Usage Walkthrough
 
-- Use HTTPS for all traffic.
-- Run the application behind a reverse proxy such as Nginx or Apache HTTP Server.
-- Enable structured logging and monitoring.
-- Configure database connection pooling.
-- Restrict administrative routes to authenticated administrator roles.
-- Perform regular database backups.
-- Remove development dependencies and unnecessary files from production deployments.
+1. Open the landing page and browse the catalogue; search or filter by category.
+2. **Sign up**, then enter the 6-digit code emailed to you.
+3. Open a course, **Add to cart**, then open the cart and **Checkout**.
+4. Pay in the PayHere sandbox popup (use PayHere's published sandbox test cards).
+5. After the payment notification is verified, the course appears in **My Learning**.
+6. Open a lesson to watch the video and download resources.
+7. Open **Instructor** to create a course (lessons + quiz) and **Reports** for sales / top-course / new-user reports and PDFs.
 
-## Usage
+## Known Limitations
 
-1. Open the SkillVerse landing page.
-2. Browse available courses or search for a specific topic.
-3. Open a course to review its details.
-4. Add the desired course to the cart.
-5. Review the cart and proceed to checkout.
-6. Complete the purchase process.
-7. Open **My Learning** to access purchased courses.
-8. Continue lessons and track learning progress.
-9. Instructors and administrators can access their respective management and reporting views.
+This project is a learning/portfolio build, not production-ready. Known gaps:
 
-## Security Considerations
-
-For production use, implement and verify the following:
-
-- Authentication and authorization for learner, instructor, and administrator roles
-- Secure session management and session timeout controls
-- Input validation and output encoding to prevent XSS
-- Parameterized database queries to prevent SQL injection
-- CSRF protection for state-changing requests
-- Secure payment integration and transaction verification
-- HTTPS enforcement and secure HTTP headers
-- Least-privilege database access
-- Dependency vulnerability scanning
+- **No roles**: any signed-in user can create courses and open the reports page.
+- Enrollment is **not enforced** when fetching lesson data or downloading resources.
+- Verification codes do not expire.
+- Lesson progress is displayed but not yet updated; the quiz can be authored but not taken.
+- No CSRF protection, no automated tests, no schema/seed scripts, build depends on jars outside the repository.
 
 ## Roadmap
 
-Planned improvements include:
-
-- REST API layer for mobile and third-party integrations
-- Video streaming and lesson-progress tracking
-- Quizzes, assignments, and certification generation
-- Instructor analytics and revenue dashboards
-- Reviews, ratings, and discussion forums
-- Coupon codes, subscriptions, and installment payments
-- Automated email notifications
-- Search, recommendations, and personalized learning paths
-- Automated test suite and CI/CD pipeline
-- Docker-based deployment configuration
+- [x] Externalise configuration (environment variables) — *remember to rotate any secrets that were previously committed*
+- [x] Salted password hashing; no password in cookies / browser storage
+- [ ] Role-based access (learner / instructor / admin), enrollment gating
+- [ ] `schema.sql` + `seed.sql`, `hibernate.cfg.xml.example`, dependencies in `pom.xml`
+- [ ] Docker Compose (GlassFish/Payara + MySQL) and a hosted demo with sample data
+- [ ] Lesson-completion tracking that drives course progress
+- [ ] Quiz taking and scoring
+- [ ] Instructor analytics from real data
+- [ ] Automated tests and CI
 
 ## Contributing
 
-Contributions are welcome. Please follow these steps:
-
-1. Fork the repository.
-2. Create a feature branch:
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-3. Make your changes and test them locally.
-4. Commit with a clear message:
-
-   ```bash
-   git commit -m "feat: add course progress tracking"
-   ```
-
-5. Push the branch:
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-6. Open a pull request describing the change, testing performed, and any related issues.
+1. Fork the repository and create a branch: `git checkout -b feature/your-feature`
+2. Make your changes and test them locally.
+3. Commit with a clear message: `git commit -m "feat: add lesson progress tracking"`
+4. Push and open a pull request describing the change and how you tested it.
 
 ## License
 
-This project is licensed under the ISC License. See the license field in [`package.json`](package.json) for details. [24]
+Licensed under the **Apache License 2.0** — see [`LICENSE`](LICENSE).
 
 ## Author
 
-**DhanikaJ**  
-GitHub: [https://github.com/DhanikaJ](https://github.com/DhanikaJ)
+**DhanikaJ** — [github.com/DhanikaJ](https://github.com/DhanikaJ)

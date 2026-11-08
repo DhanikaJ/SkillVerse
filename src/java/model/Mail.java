@@ -11,10 +11,11 @@ import javax.mail.internet.MimeMessage;
 
 public class Mail {
 
-    private static final String APP_EMAIL = "dhanikagimhana22@gmail.com";
-    private static final String APP_PASSWORD = "fizg fmdf zirq hmvy";
-
     public static void sendMail(String email, String subject, String htmlContent) {
+
+        // Credentials come from configuration (see AppConfig), never from source code.
+        final String appEmail = AppConfig.require("MAIL_USER");
+        final String appPassword = AppConfig.require("MAIL_PASSWORD");
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -25,13 +26,13 @@ public class Mail {
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Mail.APP_EMAIL, Mail.APP_PASSWORD);
+                return new PasswordAuthentication(appEmail, appPassword);
             }
         });
 
         try {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(Mail.APP_EMAIL));
+            message.setFrom(new InternetAddress(appEmail));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject(subject);
             message.setContent(htmlContent, "text/html");

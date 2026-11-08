@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.CartJson;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -45,12 +46,9 @@ public class CheckoutUserCart extends HttpServlet {
             Criteria c = s.createCriteria(Cart.class);
             c.add(Restrictions.eq("user", user));
             cartList = c.list();
-            // (Clear sensitive fields from cart if needed)
-            for (Cart cart : cartList) {
-                if (cart.getCourse() != null && cart.getCourse().getUser() != null) {
-                    cart.getCourse().setUser(null);
-                }
-            }
+            // Build the JSON while the session is open (CartJson whitelists fields, so no
+            // password hash / verification code can reach the browser).
+            resp.add("cartItems", CartJson.toJson(cartList));
         } finally {
             s.close();
         }
@@ -62,7 +60,6 @@ public class CheckoutUserCart extends HttpServlet {
 
         resp.addProperty("status", true);
         resp.add("user", userObj);
-        resp.add("cartItems", gson.toJsonTree(cartList));
 
         response.setContentType("application/json");
         response.getWriter().write(gson.toJson(resp));

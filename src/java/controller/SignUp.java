@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Mail;
+import model.PasswordUtil;
 import model.Util;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -63,7 +64,7 @@ public class SignUp extends HttpServlet {
                 u.setEmail(email);
                 u.setFname(firstName);
                 u.setLname(lastName);
-                u.setPassword_hash(password);
+                u.setPassword_hash(PasswordUtil.hash(password));
 
                 //generate verification code
                 final String verificationcode = Util.generateCode();

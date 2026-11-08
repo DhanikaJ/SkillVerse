@@ -20,7 +20,6 @@ async function getUserData() {
         const json = await response.json();
         document.getElementById("profile-name").innerHTML = `${json.firstName} ${json.lastName}` || "Add your Name";
         document.getElementById("profile-img").src = json.photo ? json.photo : "assets/images/profile.png";
-        document.getElementById("currentpassword").value = `${json.currentpassword}`;
         document.getElementById("name").value = `${json.name}`;
         // Set city/gender dropdowns ONLY IF the option exists
         let citySelect = document.getElementById("citySelect");
@@ -34,7 +33,6 @@ async function getUserData() {
     } else {
         document.getElementById("profile-name").innerHTML = "Add your Name";
         document.getElementById("profile-img").src = "assets/images/profile.png";
-        document.getElementById("currentpassword").value = "Password Missing";
         document.getElementById("name").value = "Add your Name";
         document.getElementById("citySelect").value = "0";
         document.getElementById("genderSelect").value = "0";

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.PasswordUtil;
 import model.Util;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -39,7 +40,6 @@ public class UserProfile extends HttpServlet {
             responseObject.addProperty("lastName", user.getLname());
             String name = user.getFname() + (user.getLname().isEmpty() ? "" : " " + user.getLname());
             responseObject.addProperty("name", name);
-            responseObject.addProperty("currentpassword", user.getPassword_hash());
             responseObject.addProperty("photo", user.getPhoto() != null ? user.getPhoto() : "");
             responseObject.addProperty("cityId", user.getCity() != null ? user.getCity().getId() : 0);
             responseObject.addProperty("genderId", user.getGender() != null ? user.getGender().getId() : 0);
@@ -87,7 +87,7 @@ public class UserProfile extends HttpServlet {
             responseObject.addProperty("message", "Select your City");
         } else if (genderId == 0) {
             responseObject.addProperty("message", "Select your Gender");
-        } else if (currentPassword.isEmpty()) {
+        } else if (!newPassword.isEmpty() && currentPassword.isEmpty()) {
             responseObject.addProperty("message", "Enter your current password");
         } else if (!newPassword.isEmpty() && !Util.ispwValid(newPassword)) {
             responseObject.addProperty(
@@ -141,14 +141,21 @@ public class UserProfile extends HttpServlet {
                     if (!c.list().isEmpty()) {
                         User u1 = (User) c.list().get(0);
 
+                        // Changing the password requires proving knowledge of the current one.
+                        if (!newPassword.isEmpty()
+                                && !PasswordUtil.verify(currentPassword, u1.getPassword_hash())) {
+                            tx.rollback();
+                            responseObject.addProperty("message", "Current password is incorrect!");
+                            writeJsonResponse(response, responseObject, gson);
+                            return;
+                        }
+
                         u1.setFname(firstName);
                         u1.setLname(lastName);
                         u1.setGender(gender);
                         u1.setCity(city);
-                        if (!confirmPassword.isEmpty()) {
-                            u1.setPassword_hash(confirmPassword);
-                        } else {
-                            u1.setPassword_hash(currentPassword);
+                        if (!newPassword.isEmpty()) {
+                            u1.setPassword_hash(PasswordUtil.hash(newPassword));
                         }
                         if (!photo.isEmpty()) {
                             u1.setPhoto(photo);

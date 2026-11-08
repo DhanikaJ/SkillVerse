@@ -39,12 +39,11 @@ async function signIn() {
 
             // ✅ Save credentials if remember me is checked
             if (remember) {
+                // Only the email is remembered; the password is never stored in the browser.
                 localStorage.setItem("remembered_email", email);
-                localStorage.setItem("remembered_password", password);
                 localStorage.setItem("remember_me", "true");
             } else {
                 localStorage.removeItem("remembered_email");
-                localStorage.removeItem("remembered_password");
                 localStorage.removeItem("remember_me");
             }
 
@@ -69,6 +68,8 @@ async function signIn() {
 
 // ✅ Auto-fill email + password if remembered
 function loadRememberedLogin() {
+    // Clean up a password saved by older versions of this script.
+    localStorage.removeItem("remembered_password");
     const remembered = localStorage.getItem("remember_me");
     if (remembered === "true") {
         const emailField = document.getElementById("loginEmail");
@@ -77,7 +78,6 @@ function loadRememberedLogin() {
 
         if (emailField && passwordField && rememberCheckbox) {
             emailField.value = localStorage.getItem("remembered_email") || "";
-            passwordField.value = localStorage.getItem("remembered_password") || "";
             rememberCheckbox.checked = true;
         }
     }

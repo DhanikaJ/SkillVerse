@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
+import model.CartJson;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ public class CartServlet extends HttpServlet {
                 cartList = c.list();
             }
             resp.addProperty("status", true);
-            resp.add("cartItems", gson.toJsonTree(cartList));
+            resp.add("cartItems", CartJson.toJson(cartList));
             System.out.println("[get] Returning cartList with size: " + (cartList != null ? cartList.size() : 0) + " for user: " + (user != null ? user.getId() : "guest, session_id=" + (ses != null ? ses.getId() : "")));
         } catch (Exception e) {
             e.printStackTrace();

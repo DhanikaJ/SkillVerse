@@ -12,11 +12,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.PasswordUtil;
 import model.Util;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 @WebServlet(name = "SignIn", urlPatterns = {"/SignIn"})
@@ -51,16 +52,39 @@ public class SignIn extends HttpServlet {
 
             Criteria c = s.createCriteria(User.class);
 
-            Criterion cr1 = Restrictions.eq("email", email);
-            Criterion cr2 = Restrictions.eq("password_hash", password);
+            c.add(Restrictions.eq("email", email));
 
-            c.add(cr1);
-            c.add(cr2);
+            User u = null;
+            for (Object row : c.list()) {
+                User candidate = (User) row;
+                if (PasswordUtil.verify(password, candidate.getPassword_hash())) {
+                    u = candidate;
+                    break;
+                }
+            }
 
-            if (c.list().isEmpty()) {
+            if (u == null) {
                 responseObject.addProperty("message", "Invalid Credentials");
             } else {
-                User u = (User) c.list().get(0);
+                // Accounts created before hashing existed hold a plain-text password:
+                // re-save it as a salted hash now that we know it is correct.
+                if (!PasswordUtil.isHashed(u.getPassword_hash())) {
+                    final String legacyValue = u.getPassword_hash();
+                    Transaction tx = null;
+                    try {
+                        tx = s.beginTransaction();
+                        u.setPassword_hash(PasswordUtil.hash(password));
+                        s.update(u);
+                        tx.commit();
+                    } catch (Exception ex) {
+                        if (tx != null && tx.isActive()) {
+                            tx.rollback();
+                        }
+                        u.setPassword_hash(legacyValue);
+                        System.err.println("Could not upgrade legacy password hash. Has user.password_hash"
+                                + " been widened to VARCHAR(255)? " + ex.getMessage());
+                    }
+                }
                 HttpSession ses = request.getSession();
                 ses.setAttribute("email", u.getEmail());
 
@@ -71,10 +95,6 @@ public class SignIn extends HttpServlet {
                     emailCookie.setPath("/");
                     response.addCookie(emailCookie);
 
-                    Cookie pwCookie = new Cookie("remembered_password", password);
-                    pwCookie.setMaxAge(60 * 60 * 24 * 30);
-                    pwCookie.setPath("/");
-                    response.addCookie(pwCookie);
                 } else {
                     // Clear cookies
                     Cookie emailCookie = new Cookie("remembered_email", "");
@@ -82,11 +102,13 @@ public class SignIn extends HttpServlet {
                     emailCookie.setPath("/");
                     response.addCookie(emailCookie);
 
-                    Cookie pwCookie = new Cookie("remembered_password", "");
-                    pwCookie.setMaxAge(0);
-                    pwCookie.setPath("/");
-                    response.addCookie(pwCookie);
                 }
+                // The password is never stored client-side. Expire the cookie that older
+                // versions of this app set, so existing browsers get rid of it.
+                Cookie legacyPwCookie = new Cookie("remembered_password", "");
+                legacyPwCookie.setMaxAge(0);
+                legacyPwCookie.setPath("/");
+                response.addCookie(legacyPwCookie);
                 
                 responseObject.addProperty("status", true);
 

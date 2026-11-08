@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.AppConfig;
 import model.PayHere;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -50,7 +51,6 @@ public class VerifyPayments extends HttpServlet {
         System.out.println("  payhere_amount: " + payhere_amount);
         System.out.println("  payhere_currency: " + payhere_currency);
         System.out.println("  status_code: " + status_code);
-        System.out.println("  md5sig: " + md5sig);
 
         if (merchant_id == null || order_id == null || payhere_amount == null
                 || payhere_currency == null || status_code == null || md5sig == null) {
@@ -61,15 +61,16 @@ public class VerifyPayments extends HttpServlet {
 
         try {
             // Hash verification
-            String merchantSecret = "OTc2MzYzNzUzNDg2MDkyNjMyMTU1OTY3NDkwMjE4Mzg3OTI4Njc=";
+            String merchantSecret = AppConfig.require("PAYHERE_MERCHANT_SECRET");
+            if (!AppConfig.require("PAYHERE_MERCHANT_ID").equals(merchant_id)) {
+                System.out.println("[ERROR] Merchant id does not match configuration");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
             String merchantSecretMD5 = PayHere.generateMD5(merchantSecret);
             String calculatedHash = PayHere.generateMD5(merchant_id + order_id + payhere_amount + payhere_currency + status_code + merchantSecretMD5);
 
-            System.out.println("Hash Verification:");
-            System.out.println("  Calculated hash: " + calculatedHash);
-            System.out.println("  PayHere hash: " + md5sig);
-
-            if (!calculatedHash.equals(md5sig)) {
+            if (!calculatedHash.equalsIgnoreCase(md5sig)) {
                 System.out.println("[ERROR] Hash verification failed!");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;

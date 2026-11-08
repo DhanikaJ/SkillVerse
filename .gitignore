@@ -6,3 +6,4 @@ nbproject/private/
 .env
 .env.*
 src/java/hibernate.cfg.xml
+project-notes/
